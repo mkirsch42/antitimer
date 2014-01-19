@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fr.petitl.antichamber.gui.Splits">
+  <grid id="27dc6" binding="content" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="89888" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="63d9" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="West"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="d414b" class="javax.swing.JButton" binding="saveButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Save"/>
+                </properties>
+              </component>
+              <component id="df1f2" class="javax.swing.JButton" binding="loadButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Load"/>
+                </properties>
+              </component>
+              <component id="d5169" class="javax.swing.JButton" binding="initLlanfairButton" default-binding="true">
+                <constraints/>
+                <properties>
+                  <text value="Init Llanfair"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="aada4" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="East"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="c018" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <text value="Splits"/>
+                </properties>
+              </component>
+              <component id="adb80" class="javax.swing.JButton" binding="addSplitButton">
+                <constraints/>
+                <properties>
+                  <text value="+"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="596b9" layout-manager="GridBagLayout">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="9e838" class="javax.swing.JTextField" binding="titleTextField">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                  <gridbag top="0" left="5" bottom="0" right="5" weightx="1.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <margin top="0" left="10" bottom="0" right="10"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="5728f" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="efce1" class="javax.swing.JTable" binding="completionTable">
+            <constraints border-constraint="Center"/>
+            <properties/>
+          </component>
+          <grid id="e78c8" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
+            <constraints border-constraint="North"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="80aa3" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <text value="Completion conditions"/>
+                </properties>
+              </component>
+              <component id="54976" class="javax.swing.JButton" binding="addCompletionConditionButton">
+                <constraints/>
+                <properties>
+                  <text value="+"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <scrollpane id="8cdae">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="df2d4" class="javax.swing.JTable" binding="splitTable">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+    </children>
+  </grid>
+</form>

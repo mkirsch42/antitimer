@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fr.petitl.antichamber.gui.Monitor">
+  <grid id="1f873" binding="content" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="20" y="20" width="500" height="440"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="10" vgap="10">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag top="10" left="10" bottom="10" right="10" weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="9a8b9" layout-manager="GridBagLayout">
+            <constraints border-constraint="East"/>
+            <properties>
+              <minimumSize width="120" height="0"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="a1e9a" class="javax.swing.JLabel" binding="gunLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="1.0"/>
+                </constraints>
+                <properties>
+                  <font size="36"/>
+                  <text value="Yellow"/>
+                </properties>
+              </component>
+              <grid id="bda7" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="1.0"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="bfa35" class="javax.swing.JLabel">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <font size="16"/>
+                      <horizontalAlignment value="0"/>
+                      <text value="Map"/>
+                    </properties>
+                  </component>
+                  <component id="c50fe" class="javax.swing.JLabel" binding="mapPercent">
+                    <constraints border-constraint="South"/>
+                    <properties>
+                      <font size="16"/>
+                      <horizontalAlignment value="0"/>
+                      <text value="Bidule%"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="2e51b" binding="rightPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="1.0" weighty="5.0"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children/>
+              </grid>
+            </children>
+          </grid>
+          <grid id="d2ec9" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="North"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="b58c3" class="javax.swing.JLabel">
+                <constraints border-constraint="West"/>
+                <properties>
+                  <font size="20"/>
+                  <text value="Sign: "/>
+                </properties>
+              </component>
+              <component id="3bd5b" class="javax.swing.JLabel" binding="signLabel">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <font size="20"/>
+                  <text value="Label"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
