@@ -20,7 +20,7 @@ public class Logger {
     }
 
     private final String simpleName;
-    private final LogLevel level;
+    private LogLevel level;
 
     public Logger(String simpleName, LogLevel level) {
         this.simpleName = simpleName;
@@ -35,6 +35,10 @@ public class Logger {
             level = potentialLevel.getValue();
 
         return new Logger(z.getSimpleName(), level);
+    }
+
+    public void setLevel(LogLevel level) {
+        this.level = level;
     }
 
     private PrintStream out = System.out;

@@ -1,5 +1,8 @@
 package fr.petitl.antichamber.triggers.watchers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -16,7 +19,7 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
     private Set<PinkCube> oldPinkCubes = EnumSet.noneOf(PinkCube.class);
     private Set<Sign> oldSigns = EnumSet.noneOf(Sign.class);
     private Set<Gun> oldGuns = EnumSet.noneOf(Gun.class);
-    private Set<String> oldMapEntries = new HashSet<>();
+    private Set<MapEntry> oldMapEntries = EnumSet.noneOf(MapEntry.class);
 
     public SaveFileWatcher(AntichamberSave save, SaveChangeListener listener) throws IOException {
         super(save);
@@ -27,21 +30,37 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
         Set<Sign> signs;
         Set<PinkCube> pinkCubes;
         Set<Gun> guns;
-        Set<String> mapEntries;
+        EnumSet<MapEntry> mapEntries;
 
         synchronized (save) {
             if (save.getPlayTime() == 0) {
                 listener.saveReset(l);
                 return;
             }
+
             signs = EnumSet.copyOf(save.getSigns());
             signs.removeAll(oldSigns);
             pinkCubes = EnumSet.copyOf(save.getPinkCubes());
             pinkCubes.removeAll(oldPinkCubes);
             guns = EnumSet.copyOf(save.getGuns());
             guns.removeAll(oldGuns);
-            mapEntries = new HashSet<>(save.getMapEntries());
+            mapEntries = EnumSet.copyOf(save.getMapEntries());
             mapEntries.removeAll(oldMapEntries);
+
+//
+//            if(!save.getMapEntries().equals(oldMapEntries) || !save.getSigns().equals(oldSigns)) {
+//                try {
+//                    FileWriter fw = new FileWriter(new File("bidule.txt"), true);
+//                    fw.write(save.getSigns().size() + "\r\n-\r\n");
+//                    for (MapEntry s : mapEntries) {
+//                        fw.write(s + "\r\n");
+//                    }
+//                    fw.write("\r\n\r\n");
+//                    fw.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
             saveOldState();
         }
         // release the lock asap
@@ -54,7 +73,7 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
         for (Gun gun : guns) {
             listener.newGun(gun, oldGuns.size(), l);
         }
-        for (String mapEntry : mapEntries) {
+        for (MapEntry mapEntry : mapEntries) {
             listener.newMapEntry(mapEntry, oldMapEntries.size(), l);
         }
     }

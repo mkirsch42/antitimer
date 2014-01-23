@@ -21,6 +21,9 @@ public enum PinkCube {
     MULTICOLOR("HazardLeap.TheWorld:PersistentLevel.HazardSecretTile_7", "Multi-Color Windows"), //
     GALLERY("HazardIGFChinaSplit.TheWorld:PersistentLevel.HazardSecretTile_16", "Gallery"); //
 
+    //OOB("HazardSeamless.TheWorld:PersistentLevel.HazardSecretTile_15", "Out of Bounds"), //
+    //GLITCHED_GALLERY("HazardIGFChinaSplit.TheWorld:PersistentLevel.HazardSecretTile_0", "Glitched Gallery"), //
+
     private final String id;
 
     private static Map<String, PinkCube> valueMap = new HashMap<>();

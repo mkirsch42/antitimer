@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,8 +16,8 @@ import java.util.Set;
  *
  */
 public class AntichamberSave implements FileReader {
-    private static final Logger log = Logger.getLogger(AntichamberSave.class);
-    private final Set<String> mapEntries;
+    public static final Logger log = Logger.getLogger(AntichamberSave.class);
+    private final Set<MapEntry> mapEntries;
     private final Set<Sign> signs;
     private final Set<PinkCube> pinkCubes;
     private final Set<Gun> guns;
@@ -28,7 +29,7 @@ public class AntichamberSave implements FileReader {
         guns = EnumSet.noneOf(Gun.class);
         pinkCubes = EnumSet.noneOf(PinkCube.class);
         signs = EnumSet.of(Sign.SIGN_0);
-        mapEntries = new HashSet<>();
+        mapEntries = EnumSet.of(MapEntry.ENTRY_6_3);
 
         this.file = file;
         if (!file.exists())
@@ -42,6 +43,7 @@ public class AntichamberSave implements FileReader {
         signs.clear();
         signs.add(Sign.SIGN_0);
         mapEntries.clear();
+        mapEntries.add(MapEntry.ENTRY_6_3);
         playTime = 0;
         hiddenSignHints = false;
 
@@ -87,7 +89,7 @@ public class AntichamberSave implements FileReader {
                 log.debug("Secrets");
                 for (String prop : readArrayProperty(in)) {
                     PinkCube s = PinkCube.fromString(prop);
-                    if(s == null)
+                    if (s == null)
                         continue;
                     pinkCubes.add(s);
                     log.debug("\t" + prop);
@@ -95,23 +97,28 @@ public class AntichamberSave implements FileReader {
                 break;
             case "SavedTriggers":
                 for (String prop : readArrayProperty(in)) {
-                    if(prop.startsWith("HazardIGFChinaSplit")) {
-                        Sign sign = Sign.fromString(prop);
-                        if(sign == null)
-                            continue;
-                        signs.add(sign);
+                    if (!prop.startsWith("HazardIGF")) {
+                        continue;
                     }
+                    prop = prop.replace("TheWorld:PersistentLevel.HazardTrigger_", "");
+                    prop = prop.replace("Hazard", "").replace("ChinaSplit.", "");
+                    Trigger trigger = Trigger.valueOf(prop);
+                    if (trigger.getSign() != null) {
+                        signs.add(trigger.getSign());
+                    }
+                    Collections.addAll(mapEntries, trigger.getEntries());
                 }
                 break;
             case "MapArray":
                 log.debug("Map");
-                for (String prop : readArrayProperty(in)) {
-                    mapEntries.add(prop);
-                    log.debug("\t" + prop);
-                }
+                readArrayProperty(in);
+                //for (String prop : readArrayProperty(in)) {
+                //    mapEntries.add(prop);
+                //    log.debug("\t" + prop);
+                //}
                 break;
             default:
-                log.debug("Skipping unknown property "+propName+"["+propType+"]");
+                log.debug("Skipping unknown property " + propName + "[" + propType + "]");
                 readProperty(in, propType);
                 break;
         }
@@ -145,7 +152,7 @@ public class AntichamberSave implements FileReader {
         byte[] buff = new byte[length - 1];
         if (in.read(buff) != length - 1 || in.read() < 0) {
             throw new IOException("Illegal state in the save file while trying to read a string (so far: "
-                            + new String(buff) + ")");
+                    + new String(buff) + ")");
         }
         return new String(buff);
     }
@@ -196,7 +203,7 @@ public class AntichamberSave implements FileReader {
         return guns;
     }
 
-    public Set<String> getMapEntries() {
+    public Set<MapEntry> getMapEntries() {
         return mapEntries;
     }
 
@@ -210,6 +217,6 @@ public class AntichamberSave implements FileReader {
     }
 
     public String toString() {
-        return "AntichamberSave(Map="+mapEntries.size()+", Signs="+signs.size()+", Pink="+ pinkCubes.size()+", Guns="+ guns.size()+")";
+        return "AntichamberSave(Map=" + mapEntries.size() + ", Signs=" + signs.size() + ", Pink=" + pinkCubes.size() + ", Guns=" + guns.size() + ")";
     }
 }

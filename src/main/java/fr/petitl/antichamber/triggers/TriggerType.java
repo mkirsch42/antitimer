@@ -1,6 +1,7 @@
 package fr.petitl.antichamber.triggers;
 
 import fr.petitl.antichamber.triggers.save.Gun;
+import fr.petitl.antichamber.triggers.save.MapEntry;
 import fr.petitl.antichamber.triggers.save.PinkCube;
 import fr.petitl.antichamber.triggers.save.Sign;
 
@@ -11,7 +12,7 @@ public enum TriggerType {
     GUN(Gun.values().length, "Gun"), //
     SIGN(Sign.values().length, "Sign"), //
     PINK_CUBE(PinkCube.values().length, "Pink Cube"), //
-    MAP_UPDATE(200, "Map Entries"), // To correct...
+    MAP_UPDATE(MapEntry.values().length, "Map Entries"), // To correct...
     FINISH_GAME(1, "Credits");
 
     private int maxInstances;

@@ -50,7 +50,7 @@ public class Monitor {
         Sign latestSign = gameStatus.getLatestSign();
         String s = latestSign.getLabel();
         signLabel.setText("<html> <b>" + signs.size() + "/" + (TriggerType.SIGN.getMaxInstances()) + "</b> " +
-                "#<b>" + (latestSign.ordinal() + 1) + "</b> " + s.substring(0, 30) + "...</html>");
+                "#<b>" + (latestSign.ordinal() + 1) + "</b> " + s.substring(0, Math.min(s.length()-1, 40)) + "...</html>");
         Set<Gun> guns = gameStatus.getGuns();
         if(guns.isEmpty())
             gunLabel.setText("None");
@@ -58,7 +58,7 @@ public class Monitor {
             Gun g = Collections.max(guns);
             gunLabel.setText(g.toString());
         }
-        mapPercent.setText(Math.floor(gameStatus.getMapEntries().size() *100.0 / TriggerType.MAP_UPDATE.getMaxInstances()) + "%");
+        mapPercent.setText(Math.floor(gameStatus.getMapEntries().size() * 1000.0 / TriggerType.MAP_UPDATE.getMaxInstances())/10 + "%");
         frame.setTitle(TITLE+" ["+(gameStatus.isCurrentlyRunning() ? "Running" : "Stopped")+"]");
     }
 }

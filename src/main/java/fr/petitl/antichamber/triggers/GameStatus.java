@@ -7,7 +7,6 @@ import fr.petitl.antichamber.triggers.save.*;
 import fr.petitl.antichamber.triggers.watchers.LogFileWatcher;
 import fr.petitl.antichamber.triggers.watchers.SaveFileWatcher;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -67,7 +66,7 @@ public class GameStatus {
         return saveFileWatcher.getSave().getGuns();
     }
 
-    public Set<String> getMapEntries() {
+    public Set<MapEntry> getMapEntries() {
         return saveFileWatcher.getSave().getMapEntries();
     }
 
@@ -202,7 +201,7 @@ public class GameStatus {
 
 
         @Override
-        public void newMapEntry(String m, int count, long timestamp) {
+        public void newMapEntry(MapEntry m, int count, long timestamp) {
             genericTrigger(TriggerType.MAP_UPDATE, m, count, timestamp);
         }
 

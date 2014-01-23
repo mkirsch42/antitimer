@@ -1,5 +1,6 @@
 package fr.petitl.antichamber.triggers.watchers;
 
+import fr.petitl.antichamber.log.LogLevel;
 import fr.petitl.antichamber.triggers.save.AntichamberSave;
 import fr.petitl.antichamber.triggers.save.PinkCube;
 import org.junit.Assert;
@@ -19,7 +20,8 @@ public class AntichamberSaveTest {
 
     @Test
     public void testFull() throws Exception {
-        AntichamberSave save = new AntichamberSave(new File(PATH + "test.bin"));
+        AntichamberSave save = new AntichamberSave(new File(PATH + "full.bin"));
+        AntichamberSave.log.setLevel(LogLevel.DEBUG);
         save.read();
         System.out.println(save);
     }
@@ -34,6 +36,7 @@ public class AntichamberSaveTest {
             save.read();
             HashSet<PinkCube> remains = new HashSet<>(save.getPinkCubes());
             remains.removeAll(cmp.getPinkCubes());
+            //Assert.assertEquals(remains.size(), 1);
             result.addAll(remains);
             cmp = save;
         }
