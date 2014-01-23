@@ -1,14 +1,14 @@
 package fr.petitl.antichamber.triggers.watchers;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 import fr.petitl.antichamber.triggers.save.*;
+import fr.petitl.antichamber.triggers.save.data.Gun;
+import fr.petitl.antichamber.triggers.save.data.MapEntry;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
+import fr.petitl.antichamber.triggers.save.data.Sign;
 
 /**
  *

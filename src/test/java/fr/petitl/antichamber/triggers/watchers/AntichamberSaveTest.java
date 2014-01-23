@@ -2,7 +2,7 @@ package fr.petitl.antichamber.triggers.watchers;
 
 import fr.petitl.antichamber.log.LogLevel;
 import fr.petitl.antichamber.triggers.save.AntichamberSave;
-import fr.petitl.antichamber.triggers.save.PinkCube;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,9 +1,9 @@
 package fr.petitl.antichamber.triggers;
 
-import fr.petitl.antichamber.triggers.save.Gun;
-import fr.petitl.antichamber.triggers.save.MapEntry;
-import fr.petitl.antichamber.triggers.save.PinkCube;
-import fr.petitl.antichamber.triggers.save.Sign;
+import fr.petitl.antichamber.triggers.save.data.Gun;
+import fr.petitl.antichamber.triggers.save.data.MapEntry;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
+import fr.petitl.antichamber.triggers.save.data.Sign;
 
 /**
  *
@@ -11,7 +11,7 @@ import fr.petitl.antichamber.triggers.save.Sign;
 public enum TriggerType {
     GUN(Gun.values().length, "Gun"), //
     SIGN(Sign.values().length, "Sign"), //
-    PINK_CUBE(PinkCube.values().length, "Pink Cube"), //
+    PINK_CUBE(PinkCube.OOB.ordinal(), "Pink Cube"), //
     MAP_UPDATE(MapEntry.values().length, "Map Entries"), // To correct...
     FINISH_GAME(1, "Credits");
 

@@ -1,6 +1,7 @@
 package fr.petitl.antichamber.triggers.save;
 
 import fr.petitl.antichamber.log.Logger;
+import fr.petitl.antichamber.triggers.save.data.*;
 import fr.petitl.antichamber.triggers.watchers.FileReader;
 
 import java.io.File;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -97,28 +97,17 @@ public class AntichamberSave implements FileReader {
                 break;
             case "SavedTriggers":
                 for (String prop : readArrayProperty(in)) {
-                    if (!prop.startsWith("HazardIGF")) {
-                        continue;
-                    }
-                    prop = prop.replace("TheWorld:PersistentLevel.HazardTrigger_", "");
-                    prop = prop.replace("Hazard", "").replace("ChinaSplit.", "");
                     Trigger trigger = Trigger.valueOf(prop);
+                    if (trigger == null)
+                        continue;
                     if (trigger.getSign() != null) {
                         signs.add(trigger.getSign());
                     }
                     Collections.addAll(mapEntries, trigger.getEntries());
                 }
                 break;
-            case "MapArray":
-                log.debug("Map");
-                readArrayProperty(in);
-                //for (String prop : readArrayProperty(in)) {
-                //    mapEntries.add(prop);
-                //    log.debug("\t" + prop);
-                //}
-                break;
             default:
-                log.debug("Skipping unknown property " + propName + "[" + propType + "]");
+                log.debug("Skipping unused property " + propName + "[" + propType + "]");
                 readProperty(in, propType);
                 break;
         }

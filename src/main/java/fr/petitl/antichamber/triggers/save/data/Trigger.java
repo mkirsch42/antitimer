@@ -1,4 +1,7 @@
-package fr.petitl.antichamber.triggers.save;
+package fr.petitl.antichamber.triggers.save.data;
+
+import fr.petitl.antichamber.triggers.save.data.MapEntry;
+import fr.petitl.antichamber.triggers.save.data.Sign;
 
 /**
  *
@@ -188,5 +191,14 @@ public enum  Trigger {
     Trigger(Sign sign, MapEntry... entries) {
         this.sign = sign;
         this.entries = entries;
+    }
+
+    public Trigger fromString(String prop) {
+        if (!prop.startsWith("HazardIGF")) {
+            return null;
+        }
+        prop = prop.replace("TheWorld:PersistentLevel.HazardTrigger_", "");
+        prop = prop.replace("Hazard", "").replace("ChinaSplit.", "");
+        return Trigger.valueOf(prop);
     }
 }

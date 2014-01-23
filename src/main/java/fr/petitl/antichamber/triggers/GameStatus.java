@@ -4,6 +4,10 @@ import fr.petitl.antichamber.log.Logger;
 import fr.petitl.antichamber.triggers.logger.LogChangeListener;
 import fr.petitl.antichamber.triggers.logger.LogFile;
 import fr.petitl.antichamber.triggers.save.*;
+import fr.petitl.antichamber.triggers.save.data.Gun;
+import fr.petitl.antichamber.triggers.save.data.MapEntry;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
+import fr.petitl.antichamber.triggers.save.data.Sign;
 import fr.petitl.antichamber.triggers.watchers.LogFileWatcher;
 import fr.petitl.antichamber.triggers.watchers.SaveFileWatcher;
 

@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.triggers.save;
+package fr.petitl.antichamber.triggers.save.data;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,5 +1,10 @@
 package fr.petitl.antichamber.triggers.save;
 
+import fr.petitl.antichamber.triggers.save.data.Gun;
+import fr.petitl.antichamber.triggers.save.data.MapEntry;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
+import fr.petitl.antichamber.triggers.save.data.Sign;
+
 /**
  *
  */

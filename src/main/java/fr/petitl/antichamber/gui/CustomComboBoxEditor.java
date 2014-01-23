@@ -1,8 +1,8 @@
 package fr.petitl.antichamber.gui;
 
-import fr.petitl.antichamber.triggers.save.Gun;
-import fr.petitl.antichamber.triggers.save.PinkCube;
-import fr.petitl.antichamber.triggers.save.Sign;
+import fr.petitl.antichamber.triggers.save.data.Gun;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
+import fr.petitl.antichamber.triggers.save.data.Sign;
 import fr.petitl.antichamber.triggers.TriggerType;
 
 import javax.swing.*;

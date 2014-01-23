@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.triggers.save;
+package fr.petitl.antichamber.triggers.save.data;
 
 /**
  *
