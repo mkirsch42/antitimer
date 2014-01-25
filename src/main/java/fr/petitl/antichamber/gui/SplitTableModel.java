@@ -135,4 +135,10 @@ public class SplitTableModel extends AbstractTableModel {
         triggers.add(selectedRow+1, elt);
         fireTableRowsUpdated(selectedRow, selectedRow+1);
     }
+
+    public void setTriggers(List<TriggerInfo> triggers) {
+        this.triggers.clear();
+        this.triggers.addAll(triggers);
+        fireTableDataChanged();
+    }
 }

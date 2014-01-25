@@ -193,7 +193,7 @@ public enum  Trigger {
         this.entries = entries;
     }
 
-    public Trigger fromString(String prop) {
+    public static Trigger fromString(String prop) {
         if (!prop.startsWith("HazardIGF")) {
             return null;
         }

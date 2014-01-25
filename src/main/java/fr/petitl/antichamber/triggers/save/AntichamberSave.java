@@ -97,7 +97,7 @@ public class AntichamberSave implements FileReader {
                 break;
             case "SavedTriggers":
                 for (String prop : readArrayProperty(in)) {
-                    Trigger trigger = Trigger.valueOf(prop);
+                    Trigger trigger = Trigger.fromString(prop);
                     if (trigger == null)
                         continue;
                     if (trigger.getSign() != null) {
@@ -105,6 +105,10 @@ public class AntichamberSave implements FileReader {
                     }
                     Collections.addAll(mapEntries, trigger.getEntries());
                 }
+                break;
+            case "MapArray":
+                log.debug("Map");
+                readArrayProperty(in);
                 break;
             default:
                 log.debug("Skipping unused property " + propName + "[" + propType + "]");

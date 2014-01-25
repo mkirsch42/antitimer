@@ -34,9 +34,9 @@ public enum MapEntry {
     ENTRY_15_2(15, 2, Type.ROOM),
     ENTRY_16_2(16, 2, Type.ARROW, Orientation.RIGHT),
     ENTRY_2_3(2, 3, Type.ROOM),
-    ENTRY_3_3(3, 3, Type.ROOM),
-    ENTRY_4_3(4, 3, Type.ROOM),
-    ENTRY_5_3(5, 3, Type.ROOM),
+    ENTRY_3_3(3, 3, Type.ROOM, Orientation.RIGHT),
+    ENTRY_4_3(4, 3, Type.ROOM, Orientation.LEFT, Orientation.RIGHT),
+    ENTRY_5_3(5, 3, Type.ROOM, Orientation.LEFT),
     ENTRY_6_3(6, 3, Type.ROOM),
     ENTRY_7_3(7, 3, Type.PATH, Orientation.LEFT, Orientation.RIGHT),
     ENTRY_8_3(8, 3, Type.PATH, Orientation.TOP, Orientation.LEFT, Orientation.BOTTOM),
@@ -59,8 +59,8 @@ public enum MapEntry {
     ENTRY_9_4(9, 4, Type.ROOM),
     ENTRY_11_4(11, 4, Type.ARROW, Orientation.BOTTOM),
     ENTRY_13_4(13, 4, Type.ROOM),
-    ENTRY_14_4(14, 4, Type.ROOM),
-    ENTRY_15_4(15, 4, Type.ROOM),
+    ENTRY_14_4(14, 4, Type.ROOM, Orientation.RIGHT),
+    ENTRY_15_4(15, 4, Type.ROOM, Orientation.LEFT),
     ENTRY_16_4(16, 4, Type.ARROW, Orientation.RIGHT),
     ENTRY_1_5(1, 5, Type.ARROW, Orientation.BOTTOM),
     ENTRY_2_5(2, 5, Type.ARROW, Orientation.BOTTOM),
@@ -70,19 +70,19 @@ public enum MapEntry {
     ENTRY_6_5(6, 5, Type.PATH, Orientation.TOP, Orientation.BOTTOM),
     ENTRY_7_5(7, 5, Type.ARROW, Orientation.BOTTOM),
     ENTRY_8_5(8, 5, Type.DEADEND, Orientation.LEFT),
-    ENTRY_9_5(9, 5, Type.ROOM),
+    ENTRY_9_5(9, 5, Type.ROOM, Orientation.BOTTOM),
     ENTRY_10_5(10, 5, Type.ARROW, Orientation.RIGHT),
     ENTRY_13_5(13, 5, Type.ROOM),
     ENTRY_14_5(14, 5, Type.ARROW, Orientation.BOTTOM),
     ENTRY_1_6(1, 6, Type.ARROW, Orientation.LEFT),
     ENTRY_2_6(2, 6, Type.ROOM),
-    ENTRY_3_6(3, 6, Type.ROOM),
+    ENTRY_3_6(3, 6, Type.ROOM, Orientation.BOTTOM),
     ENTRY_4_6(4, 6, Type.ROOM),
     ENTRY_5_6(5, 6, Type.PATH, Orientation.LEFT, Orientation.RIGHT),
     ENTRY_6_6(6, 6, Type.ROOM),
     ENTRY_7_6(7, 6, Type.ROOM),
     ENTRY_8_6(8, 6, Type.ROOM),
-    ENTRY_9_6(9, 6, Type.ROOM),
+    ENTRY_9_6(9, 6, Type.ROOM, Orientation.TOP),
     ENTRY_10_6(10, 6, Type.DEADEND, Orientation.RIGHT),
     ENTRY_12_6(12, 6, Type.DEADEND, Orientation.LEFT),
     ENTRY_13_6(13, 6, Type.ROOM),
@@ -90,7 +90,7 @@ public enum MapEntry {
     ENTRY_15_6(15, 6, Type.ARROW, Orientation.TOP),
     ENTRY_1_7(1, 7, Type.DEADEND, Orientation.TOP),
     ENTRY_2_7(2, 7, Type.ARROW, Orientation.LEFT),
-    ENTRY_3_7(3, 7, Type.ROOM),
+    ENTRY_3_7(3, 7, Type.ROOM, Orientation.TOP),
     ENTRY_4_7(4, 7, Type.ROOM),
     ENTRY_6_7(6, 7, Type.PATH, Orientation.TOP, Orientation.BOTTOM),
     ENTRY_12_7(12, 7, Type.ARROW, Orientation.LEFT),
@@ -116,10 +116,10 @@ public enum MapEntry {
     ENTRY_2_9(2, 9, Type.ROOM),
     ENTRY_3_9(3, 9, Type.ROOM),
     ENTRY_4_9(4, 9, Type.ROOM),
-    ENTRY_5_9(5, 9, Type.ROOM),
-    ENTRY_6_9(6, 9, Type.ROOM),
+    ENTRY_5_9(5, 9, Type.ROOM, Orientation.RIGHT),
+    ENTRY_6_9(6, 9, Type.ROOM, Orientation.LEFT),
     ENTRY_7_9(7, 9, Type.PATH, Orientation.LEFT, Orientation.RIGHT, Orientation.BOTTOM),
-    ENTRY_8_9(8, 9, Type.ROOM),
+    ENTRY_8_9(8, 9, Type.ROOM, Orientation.BOTTOM),
     ENTRY_9_9(9, 9, Type.DEADEND, Orientation.LEFT),
     ENTRY_10_9(10, 9, Type.ROOM),
     ENTRY_11_9(11, 9, Type.PATH, Orientation.LEFT, Orientation.BOTTOM),
@@ -131,7 +131,7 @@ public enum MapEntry {
     ENTRY_3_10(3, 10, Type.ROOM),
     ENTRY_6_10(6, 10, Type.DEADEND, Orientation.LEFT),
     ENTRY_7_10(7, 10, Type.ROOM),
-    ENTRY_8_10(8, 10, Type.ROOM),
+    ENTRY_8_10(8, 10, Type.ROOM, Orientation.TOP),
     ENTRY_9_10(9, 10, Type.ROOM),
     ENTRY_10_10(10, 10, Type.ROOM),
     ENTRY_11_10(11, 10, Type.ROOM),
@@ -165,6 +165,8 @@ public enum MapEntry {
         if(arg.length > 0) {
             mainOrientation = arg[0];
             orientations = EnumSet.copyOf(Arrays.asList(arg));
+        } else {
+            orientations = EnumSet.noneOf(Orientation.class);
         }
     }
 
@@ -229,7 +231,20 @@ public enum MapEntry {
         TOP,
         LEFT,
         BOTTOM,
-        RIGHT
+        RIGHT;
+        public Orientation opposite() {
+            switch (this) {
+                case TOP:
+                    return BOTTOM;
+                case LEFT:
+                    return RIGHT;
+                case BOTTOM:
+                    return TOP;
+                case RIGHT:
+                    return LEFT;
+            }
+            return null;
+        }
     }
 
     /**

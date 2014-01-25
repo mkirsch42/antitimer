@@ -27,7 +27,6 @@ public class GameStatus {
     private static Logger log = Logger.getLogger(GameStatus.class);
 
     private SaveFileWatcher saveFileWatcher;
-    private LogFileWatcher logFileWatcher;
     private final int theEndSpammerKeyCode;
     private SplitEngine splitEngine;
     private StatusChangeListener scl;
@@ -44,7 +43,7 @@ public class GameStatus {
         this.scl = scl;
         Watcher w = new Watcher();
         saveFileWatcher = new SaveFileWatcher(save, w);
-        logFileWatcher = new LogFileWatcher(log, w);
+        new LogFileWatcher(log, w);
         splitIndex.clear();
         latestSign = Sign.SIGN_0;
         isCurrentlyRunning = false;
@@ -169,7 +168,7 @@ public class GameStatus {
     private <E> void genericTrigger(TriggerType type, E g, int count, long timestamp) {
         log.info("Triggered " + type.toString() + " (" + count + "/" + type.getMaxInstances() + "): " + g);
         if(isCurrentlyRunning) {
-            TriggerInfo<E> trigger = new TriggerInfo<>(type, g, false);
+            TriggerInfo trigger = new TriggerInfo(type, g, false);
             if (splitIndex.contains(trigger)) {
                 log.info("\t" + sdf.format(new Date(timestamp - startTimestamp)) + " Split (selected)");
                 // damn I don't like that

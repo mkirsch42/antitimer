@@ -1,14 +1,16 @@
 package fr.petitl.antichamber.triggers;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public class TriggerInfo<E> {
+public class TriggerInfo implements Serializable {
     private TriggerType type;
-    private E argumentToMatch;
+    private Object argumentToMatch;
     private boolean mustBeComplete;
 
-    public TriggerInfo(TriggerType type, E argumentToMatch, boolean mustBeComplete) {
+    public TriggerInfo(TriggerType type, Object argumentToMatch, boolean mustBeComplete) {
         this.type = type;
         this.argumentToMatch = argumentToMatch;
         this.mustBeComplete = mustBeComplete;
@@ -18,7 +20,7 @@ public class TriggerInfo<E> {
         return type;
     }
 
-    public E getArgumentToMatch() {
+    public Object getArgumentToMatch() {
         return argumentToMatch;
     }
 
@@ -30,7 +32,7 @@ public class TriggerInfo<E> {
         this.type = type;
     }
 
-    public void setArgumentToMatch(E argumentToMatch) {
+    public void setArgumentToMatch(Object argumentToMatch) {
         this.argumentToMatch = argumentToMatch;
     }
 

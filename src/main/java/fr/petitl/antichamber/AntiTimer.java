@@ -1,5 +1,6 @@
 package fr.petitl.antichamber;
 
+import fr.petitl.antichamber.gui.MapMonitor;
 import fr.petitl.antichamber.gui.Monitor;
 import fr.petitl.antichamber.gui.Splits;
 import fr.petitl.antichamber.llanfair.LlanfairControl;
@@ -26,6 +27,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
     private final Monitor monitorFrame;
     private final GameStatus gameStatus;
     private final LlanfairControl control;
+    private final MapMonitor mapMonitor;
 
     public AntiTimer() throws IOException {
         Llanfair llanfair = new Llanfair();
@@ -33,6 +35,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 
         splitsFrame = new Splits(control);
         monitorFrame = new Monitor();
+        mapMonitor = new MapMonitor();
         AntichamberSave save = new AntichamberSave(new File("Binaries/Win32/SavedGame.bin"));
         LogFile logFile = new LogFile(new File("UDKGame/Logs/Launch.log"));
         gameStatus = new GameStatus(save, logFile, KeyEvent.VK_P, this, this);
@@ -54,6 +57,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
     @Override
     public void gameStatusHasChanged() {
         monitorFrame.update(gameStatus);
+        mapMonitor.setEntries(gameStatus.getMapEntries());
     }
 
     @Override
