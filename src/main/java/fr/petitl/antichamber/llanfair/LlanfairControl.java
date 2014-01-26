@@ -28,6 +28,10 @@ public class LlanfairControl {
         return run;
     }
 
+    public void exit() {
+        llanfair.windowClosed(null);
+    }
+
     public void buildAndInjectRun(String name, List<TriggerInfo> splits) {
         Run r = new Run("Antichamber ("+name+")");
         for (TriggerInfo trigger : splits) {

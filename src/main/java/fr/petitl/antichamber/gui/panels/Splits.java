@@ -1,10 +1,17 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.panels;
 
+import fr.petitl.antichamber.gui.panels.ButtonColumn;
+import fr.petitl.antichamber.gui.panels.CustomComboBoxEditor;
+import fr.petitl.antichamber.gui.panels.SplitTableModel;
+import fr.petitl.antichamber.gui.panels.TableCellRendererAsEditor;
 import fr.petitl.antichamber.llanfair.LlanfairControl;
+import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.TriggerInfo;
 import fr.petitl.antichamber.triggers.TriggerType;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -16,20 +23,16 @@ import java.util.List;
 public class Splits {
     private JTable splitTable;
     private JPanel content;
-    private JButton saveButton;
-    private JButton loadButton;
     private JTextField titleTextField;
     private JTable completionTable;
     private JButton addSplitButton;
     private JButton addCompletionConditionButton;
-    private JButton initLlanfairButton;
     private SplitTableModel completionModel = new SplitTableModel();
     private SplitTableModel splitModel = new SplitTableModel();
-    private final JFrame frame;
 
     private File saveFile;
 
-    public Splits(final LlanfairControl control) {
+    public Splits(final GameStatus status) {
         completionModel = new SplitTableModel();
         completionTable.setModel(completionModel);
         splitModel = new SplitTableModel();
@@ -54,69 +57,21 @@ public class Splits {
         }
         DefaultCellEditor triggerEdit = new DefaultCellEditor(comboBox);
         CustomComboBoxEditor valueEditor = new CustomComboBoxEditor();
-        initLlanfairButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                control.buildAndInjectRun(titleTextField.getText(), splitModel.getTriggers());
-            }
-        });
-
         initTable(triggerEdit, valueEditor, splitTable);
         initTable(triggerEdit, valueEditor, completionTable);
 
-        frame = new JFrame("Antitimer");
-        frame.setContentPane(content);
-        frame.setSize(500, 400);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        saveButton.addActionListener(new ActionListener() {
+
+        splitModel.addTableModelListener(new TableModelListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (saveFile == null) {
-                    JFileChooser fc = new JFileChooser();
-                    fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                    fc.setDialogType(JFileChooser.SAVE_DIALOG);
-                    if (fc.showDialog(frame, "Save") != JFileChooser.APPROVE_OPTION) {
-                        return;
-                    }
-                    saveFile = fc.getSelectedFile();
-                    try {
-                        saveFile.createNewFile();
-                    } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(frame, "Cannot create file " + saveFile.getName() + "\n" + e1.getMessage());
-                        return;
-                    }
-                }
-                try (FileOutputStream fos = new FileOutputStream(saveFile, false)) {
-                    ObjectOutputStream oos = new ObjectOutputStream(fos);
-                    oos.writeObject(titleTextField.getText());
-                    oos.writeObject(splitModel.getTriggers());
-                    oos.writeObject(completionModel.getTriggers());
-                } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(frame, "Cannot write to " + saveFile.getName() + "\n" + e1.getMessage());
-                }
+            public void tableChanged(TableModelEvent e) {
+                status.setSplits(splitModel.getTriggers());
             }
         });
-        loadButton.addActionListener(new ActionListener() {
+        completionModel.addTableModelListener(new TableModelListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fc.setDialogType(JFileChooser.OPEN_DIALOG);
-                if (fc.showDialog(frame, "Open") != JFileChooser.APPROVE_OPTION) {
-                    return;
-                }
-                saveFile = fc.getSelectedFile();
-                try {
-                    FileInputStream fis = new FileInputStream(saveFile);
-                    ObjectInputStream oos = new ObjectInputStream(fis);
-                    titleTextField.setText((String) oos.readObject());
-                    splitModel.setTriggers((List<TriggerInfo>) oos.readObject());
-                    completionModel.setTriggers((List<TriggerInfo>) oos.readObject());
-                } catch (IOException | ClassNotFoundException e1) {
-                    JOptionPane.showMessageDialog(frame, "Cannot read " + saveFile.getName() + "\n" + e1.getMessage());
-                }
+            public void tableChanged(TableModelEvent e) {
+                status.setEndingConditions(completionModel.getTriggers());
             }
         });
     }
@@ -165,15 +120,19 @@ public class Splits {
     private void createUIComponents() {
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
-
     public SplitTableModel getCompletionModel() {
         return completionModel;
     }
 
     public SplitTableModel getSplitModel() {
         return splitModel;
+    }
+
+    public JPanel getContent() {
+        return content;
+    }
+
+    public JTextField getTitleTextField() {
+        return titleTextField;
     }
 }

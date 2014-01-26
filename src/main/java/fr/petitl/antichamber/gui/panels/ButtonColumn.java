@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.panels;
 
 import java.awt.*;
 import java.awt.event.*;

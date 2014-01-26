@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fr.petitl.antichamber.gui.Splits">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fr.petitl.antichamber.gui.panels.Splits">
   <grid id="27dc6" binding="content" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
@@ -12,31 +12,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="63d9" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
-            <constraints border-constraint="West"/>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="d414b" class="javax.swing.JButton" binding="saveButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Save"/>
-                </properties>
-              </component>
-              <component id="df1f2" class="javax.swing.JButton" binding="loadButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Load"/>
-                </properties>
-              </component>
-              <component id="d5169" class="javax.swing.JButton" binding="initLlanfairButton" default-binding="true">
-                <constraints/>
-                <properties>
-                  <text value="Init Llanfair"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
           <grid id="aada4" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="East"/>
             <properties/>

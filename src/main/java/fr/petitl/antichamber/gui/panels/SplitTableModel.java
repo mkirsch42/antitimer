@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.panels;
 
 import fr.petitl.antichamber.triggers.TriggerInfo;
 import fr.petitl.antichamber.triggers.TriggerType;
@@ -13,6 +13,11 @@ import java.util.List;
 public class SplitTableModel extends AbstractTableModel {
     public static String COMPLETE_VALUE = "Complete";
     private List<TriggerInfo> triggers = new LinkedList<>();
+
+    public void clear() {
+        triggers.clear();
+        fireTableDataChanged();
+    }
 
     @Override
     public String getColumnName(int column) {

@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.panels;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;

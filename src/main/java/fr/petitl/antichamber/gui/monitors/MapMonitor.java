@@ -1,5 +1,7 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.monitors;
 
+import fr.petitl.antichamber.gui.MonitorFrame;
+import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.save.data.MapEntry;
 
 import javax.swing.*;
@@ -10,11 +12,11 @@ import java.util.Collection;
 /**
  *
  */
-public class MapMonitor extends JPanel {
+public class MapMonitor extends JPanel implements MonitorFrame {
     private static final float PATH_SIZE = 1.0f / 4;
     private static final float DEAD_END_SIZE = 1.0f * 4 / 9;
     private static final float ARROW_FREE_SIZE = 1.0f / 8;
-    private static final String TITLE = "AntiMap";
+    private static final String TITLE = "Map";
     private final JFrame frame;
     private MapEntry[][] entries = new MapEntry[18][12];
 
@@ -28,6 +30,11 @@ public class MapMonitor extends JPanel {
 
     public JFrame getFrame() {
         return frame;
+    }
+
+    @Override
+    public void update(GameStatus status) {
+        setEntries(status.getMapEntries());
     }
 
     public void clear() {

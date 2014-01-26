@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.panels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class SquareMatrixPanel extends JPanel {
         this.squareColor = squareColor;
         this.max = cols * rows;
         values = new boolean[this.max];
-        defaultColor = UIManager.getColor("Panel.background");
+        defaultColor = Color.BLACK;
 
         //
         for (int i = 0, valuesLength = values.length; i < valuesLength; i++) {
@@ -54,8 +54,8 @@ public class SquareMatrixPanel extends JPanel {
         g.setColor(defaultColor);
         g.fillRect(0, 0, width, getHeight());
         double squareSize = (width) * 2.0 / (3 * cols);
-        setPreferredSize(new Dimension(width, width * rows / cols));
-        setSize(new Dimension(width, width * rows / cols));
+        //setPreferredSize(new Dimension(width, width * rows / cols));
+        //setSize(new Dimension(width, width * rows / cols));
         int squareInt = (int) Math.round(squareSize);
         int r = squareInt / 4;
         for (int i = 0; i < rows; i++) {

@@ -1,4 +1,4 @@
-package fr.petitl.antichamber.gui;
+package fr.petitl.antichamber.gui.panels;
 
 import fr.petitl.antichamber.triggers.save.data.Gun;
 import fr.petitl.antichamber.triggers.save.data.PinkCube;
