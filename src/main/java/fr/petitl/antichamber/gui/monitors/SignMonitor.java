@@ -17,7 +17,7 @@ public class SignMonitor extends JFrame implements MonitorFrame {
     public SignMonitor() {
         super("Sign");
         add(signLabel);
-        setSize(800, 50);
+        setSize(800, 150);
         signLabel.setFont(signLabel.getFont().deriveFont(FONT_SIZE));
     }
 

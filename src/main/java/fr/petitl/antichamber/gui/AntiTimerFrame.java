@@ -1,14 +1,17 @@
 package fr.petitl.antichamber.gui;
 
+import fr.petitl.antichamber.AntiTimer;
+import fr.petitl.antichamber.Configuration;
 import fr.petitl.antichamber.gui.monitors.*;
 import fr.petitl.antichamber.gui.panels.Splits;
 import fr.petitl.antichamber.llanfair.LlanfairControl;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.TriggerInfo;
+import org.fenix.llanfair.Llanfair;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +32,14 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private Splits splits;
     private File saveFile;
     private GameStatus status;
-    private Configuration conf;
+    private Configuration cfg;
 
-    public AntiTimerFrame(LlanfairControl control, GameStatus status) {
+    public AntiTimerFrame(LlanfairControl control, GameStatus status, Configuration cfg) {
         super(TITLE);
 
         this.control = control;
         this.status = status;
+        this.cfg = cfg;
         splits = new Splits(status);
         setContentPane(splits.getContent());
         gun = new GunMonitor();
@@ -57,23 +61,89 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         helpMenu(m);
         setJMenuBar(m);
 
+        initWindows();
+
         setSize(500, 400);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    private void initWindows() {
+        for (MonitorFrame frame : frames) {
+            initWindows(frame);
+        }
+        initWindows(this);
+    }
+
+    private void initWindows(MonitorFrame frame) {
+        final String windowName = frame.getClass().getSimpleName();
+        Point w = cfg.getWindowLocation(windowName);
+        final JFrame frameComponent = frame.getFrame();
+        frameComponent.setLocation(w);
+        frameComponent.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                cfg.setWindowSize(windowName, frameComponent.getSize());
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                cfg.setWindowLocation(windowName, frameComponent.getLocation());
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+
+            }
+        });
+    }
+
     private void helpMenu(JMenuBar m) {
+        final JFrame frame = this;
         JMenu help = new JMenu("Help");
         JMenuItem instructions = new JMenuItem("Instructions");
         help.add(instructions);
         JMenuItem about = new JMenuItem("About");
+        about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "AntiTimer " + AntiTimer.VERSION + "\n\n" +
+                        "Developed by: WydD\n\n" +
+                        "Special thanks to:\n" +
+                        "\tCrehl (for his early work on the sign tracker)\n" +
+                        "\tCali (for knowing this game)\n" +
+                        "\tAll the Antichamber Speedrunning Community\n\n" +
+                        "AntiTimer embeds Llanfair 1.4.3 (“Dante”)\n" +
+                        "\tdeveloped by Xunkar\n" +
+                        "\treleased under CC-BY-SA");
+            }
+        });
         help.add(about);
+        m.add(help);
     }
 
     private void antiTimerMenu(JMenuBar m) {
         final JFrame frame = this;
-        JMenu help = new JMenu("AntiTimer");
+        JMenu anti = new JMenu("AntiTimer");
+        JMenuItem launch = new JMenuItem("Launch Antichamber");
+        anti.add(launch);
+        launch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Runtime runtime = Runtime.getRuntime();
+                try {
+                    runtime.exec(new String[]{cfg.getAntichamberExe().getAbsolutePath(), "-FORCELOGFLUSH"});
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Error while trying to launch Antichamber: " + e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
         JMenuItem load = new JMenuItem("Load");
-        help.add(load);
+        anti.add(load);
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,7 +166,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
             }
         });
         JMenuItem save = new JMenuItem("Save");
-        help.add(save);
+        anti.add(save);
         final ActionListener saveAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,7 +197,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         };
         save.addActionListener(saveAction);
         JMenuItem saveAs = new JMenuItem("Save as...");
-        help.add(saveAs);
+        anti.add(saveAs);
         saveAs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,16 +205,16 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                 saveAction.actionPerformed(e);
             }
         });
-        help.add(new JSeparator());
+        anti.add(new JSeparator());
         JMenuItem configure = new JMenuItem("Configure");
-        help.add(configure);
-        saveAs.addActionListener(new ActionListener() {
+        anti.add(configure);
+        configure.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Not implemented yet", "Configure", JOptionPane.ERROR_MESSAGE);
             }
         });
-        help.add(new JSeparator());
+        anti.add(new JSeparator());
         JMenuItem clear = new JMenuItem("Clear");
         clear.addActionListener(new ActionListener() {
             @Override
@@ -153,16 +223,16 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                 splits.getSplitModel().clear();
             }
         });
-        help.add(clear);
+        anti.add(clear);
         JMenuItem initLlanfair = new JMenuItem("Init Llanfair");
-        help.add(initLlanfair);
+        anti.add(initLlanfair);
         initLlanfair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 control.buildAndInjectRun(splits.getTitleTextField().getText(), splits.getSplitModel().getTriggers());
             }
         });
-        help.add(new JSeparator());
+        anti.add(new JSeparator());
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(new ActionListener() {
             @Override
@@ -170,8 +240,8 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                 control.exit();
             }
         });
-        help.add(exit);
-        m.add(help);
+        anti.add(exit);
+        m.add(anti);
     }
 
     private void monitorMenu(JMenuBar m) {
@@ -198,24 +268,60 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
             if (frame.getFrame().isVisible())
                 frame.update(status);
         }
-
     }
 
-    private class MonitorMenuItem extends JMenuItem implements ActionListener {
+    private class MonitorMenuItem extends JCheckBoxMenuItem implements ActionListener, WindowListener {
         private final MonitorFrame frame;
 
         private MonitorMenuItem(MonitorFrame frame, String label) {
             super(label);
             this.frame = frame;
             addActionListener(this);
+            frame.getFrame().setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            frame.getFrame().addWindowListener(this);
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (status != null) {
+            if (status != null && isSelected()) {
                 frame.update(status);
             }
-            frame.getFrame().setVisible(true);
+            frame.getFrame().setVisible(isSelected());
+        }
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+            setSelected(true);
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            setSelected(false);
+            frame.getFrame().setVisible(false);
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+
         }
     }
 }

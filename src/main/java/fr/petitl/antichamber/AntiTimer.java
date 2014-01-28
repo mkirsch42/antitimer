@@ -10,6 +10,7 @@ import fr.petitl.antichamber.triggers.save.AntichamberSave;
 import org.fenix.llanfair.Llanfair;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -18,26 +19,55 @@ import java.io.IOException;
  *
  */
 public class AntiTimer implements StatusChangeListener, SplitEngine {
-
-    private final LlanfairControl control;
-    private final AntiTimerFrame frame;
-    private final GameStatus gameStatus;
+    public final static String VERSION = "0.1";
+    private LlanfairControl control;
+    private AntiTimerFrame frame;
+    private GameStatus gameStatus;
 
     public AntiTimer() throws IOException {
+        Configuration cfg = Configuration.read();
+
+        File exe = cfg.getAntichamberExe();
+        if (!exe.exists()) {
+            JFileChooser fc = new JFileChooser(cfg.getAntichamberPath());
+            fc.setDialogTitle("Select the Antichamber executable");
+            fc.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() || f.getAbsolutePath().contains("Win32") && f.getName().equals("UDK.exe");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "UDK.exe";
+                }
+            });
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fc.setDialogType(JFileChooser.OPEN_DIALOG);
+            if (fc.showDialog(null, "Select") != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            exe = fc.getSelectedFile();
+            String exeAbsolutePath = exe.getParentFile().getParentFile().getParentFile().getAbsolutePath();
+            cfg.setAntichamberPath(exeAbsolutePath);
+        }
+
         Llanfair llanfair = new Llanfair();
         control = new LlanfairControl(llanfair);
 
-        AntichamberSave save = new AntichamberSave(new File("Binaries/Win32/SavedGame.bin"));
-        LogFile logFile = new LogFile(new File("UDKGame/Logs/Launch.log"));
+        AntichamberSave save = new AntichamberSave(cfg.getAntichamberSave());
+        LogFile logFile = new LogFile(cfg.getAntichamberLog());
         gameStatus = new GameStatus(save, logFile, KeyEvent.VK_P, this, this);
 
-        frame = new AntiTimerFrame(control, gameStatus);
+        frame = new AntiTimerFrame(control, gameStatus, cfg);
         frame.getFrame().setVisible(true);
+        frame.update(gameStatus);
     }
 
     @Override
     public void gameStatusHasChanged() {
-        frame.update(gameStatus);
+        if(frame != null)
+            frame.update(gameStatus);
     }
 
     @Override
@@ -65,11 +95,11 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
             @Override
             public void run() {
                 try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     new AntiTimer();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-
             }
         });
     }

@@ -19,7 +19,7 @@ public class SignWallMonitor extends JFrame implements MonitorFrame {
     public SignWallMonitor() {
         super("Sign Wall");
         add(signWall, BorderLayout.CENTER);
-        setSize(650, 370);
+        setSize(650, 375);
     }
 
     @Override

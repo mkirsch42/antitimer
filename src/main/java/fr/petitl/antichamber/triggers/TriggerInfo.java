@@ -6,6 +6,8 @@ import java.io.Serializable;
  *
  */
 public class TriggerInfo implements Serializable {
+    private static final long serialVersionUID = 9152038806864489141L;
+
     private TriggerType type;
     private Object argumentToMatch;
     private boolean mustBeComplete;

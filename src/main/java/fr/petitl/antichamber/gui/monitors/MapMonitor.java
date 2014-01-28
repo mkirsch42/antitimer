@@ -23,8 +23,7 @@ public class MapMonitor extends JPanel implements MonitorFrame {
     public MapMonitor() {
         frame = new JFrame(TITLE);
         frame.setContentPane(this);
-        frame.setSize(810, 560);
-        frame.setVisible(true);
+        frame.setSize(800, 555);
         clear();
     }
 
