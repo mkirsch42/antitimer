@@ -1,10 +1,5 @@
 package fr.petitl.antichamber.gui.panels;
 
-import fr.petitl.antichamber.gui.panels.ButtonColumn;
-import fr.petitl.antichamber.gui.panels.CustomComboBoxEditor;
-import fr.petitl.antichamber.gui.panels.SplitTableModel;
-import fr.petitl.antichamber.gui.panels.TableCellRendererAsEditor;
-import fr.petitl.antichamber.llanfair.LlanfairControl;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.TriggerInfo;
 import fr.petitl.antichamber.triggers.TriggerType;
@@ -14,8 +9,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.List;
+import java.io.File;
 
 /**
  *
@@ -61,19 +55,20 @@ public class Splits {
         initTable(triggerEdit, valueEditor, completionTable);
 
 
-
-        splitModel.addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                status.setSplits(splitModel.getTriggers());
-            }
-        });
-        completionModel.addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                status.setEndingConditions(completionModel.getTriggers());
-            }
-        });
+        if (status != null) {
+            splitModel.addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    status.setSplits(splitModel.getTriggers());
+                }
+            });
+            completionModel.addTableModelListener(new TableModelListener() {
+                @Override
+                public void tableChanged(TableModelEvent e) {
+                    status.setEndingConditions(completionModel.getTriggers());
+                }
+            });
+        }
     }
 
     private void initTable(DefaultCellEditor triggerEdit, CustomComboBoxEditor valueEditor, final JTable table) {
@@ -105,19 +100,6 @@ public class Splits {
                 ((SplitTableModel) table.getModel()).shiftDown(modelRow);
             }
         }, 4);
-        // assume JTable is named "table"
-        /*TableButton buttonEditor = new TableButton("x");
-        buttonEditor.addTableButtonListener(new TableButtonListener() {
-            @Override
-            public void tableButtonClicked(final int row, int col) {
-            }
-        });
-        TableColumn col = table.getColumnModel().getColumn(2);
-        col.setCellRenderer(buttonEditor);
-        col.setCellEditor(buttonEditor);  */
-    }
-
-    private void createUIComponents() {
     }
 
     public SplitTableModel getCompletionModel() {

@@ -2,13 +2,12 @@ package fr.petitl.antichamber.llanfair;
 
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
+import fr.petitl.antichamber.log.Logger;
 import fr.petitl.antichamber.triggers.TriggerInfo;
-import org.fenix.llanfair.Llanfair;
-import org.fenix.llanfair.Run;
-import org.fenix.llanfair.Segment;
-import org.fenix.llanfair.Time;
+import org.fenix.llanfair.*;
 
 import javax.swing.*;
 
@@ -16,6 +15,7 @@ import javax.swing.*;
  *
  */
 public class LlanfairControl {
+    private static Logger log = Logger.getLogger(LlanfairControl.class);
     private Run run;
     private Llanfair llanfair;
 
@@ -33,13 +33,13 @@ public class LlanfairControl {
     }
 
     public void buildAndInjectRun(String name, List<TriggerInfo> splits) {
-        Run r = new Run("Antichamber ("+name+")");
+        Run r = new Run("Antichamber (" + name + ")");
         for (TriggerInfo trigger : splits) {
             String segmentName = trigger.getType().toString() + ": ";
             segmentName += trigger.mustBeComplete() ? "Complete" : trigger.getArgumentToMatch().toString();
             r.addSegment(new Segment(segmentName));
         }
-        r.addSegment(new Segment("Complete "+name));
+        r.addSegment(new Segment("Complete " + name));
         llanfair.setRun(r);
     }
 
@@ -63,6 +63,18 @@ public class LlanfairControl {
             Field currentField = obj.getClass().getDeclaredField(field);
             currentField.setAccessible(true);
             return (E) currentField.get(obj);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private <E> E callPrivateMethod(Object obj, String method, Class<E> clazz) {
+        try {
+            Method m = obj.getClass().getDeclaredMethod(method);
+            m.setAccessible(true);
+            return (E) m.invoke(obj);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -107,25 +119,33 @@ public class LlanfairControl {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                c.internalStart(stopTime);
+                try {
+                    c.internalStart(stopTime);
+                } catch (Exception e) {
+                    log.error("Reset failed: " + e.getMessage());
+                }
             }
         });
     }
 
     private void internalStart(long startTime) {
-        ensureRun();
-        if ((run.getState() == null) || (run.getState() == Run.State.ONGOING)) {
-            throw new IllegalStateException("illegal Run.State to start");
+        try {
+            ensureRun();
+            if ((run.getState() == null) || (run.getState() == Run.State.ONGOING)) {
+                throw new IllegalStateException("illegal Run.State to start");
+            }
+
+            setPrivateField(run, "startTime", startTime);
+            setPrivateField(run, "current", 0);
+            setPrivateField(run, "state", Run.State.ONGOING);
+            setPrivateField(run.getSegment(run.getCurrent()), "startTime", startTime);
+
+            getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.state", Run.State.READY,
+                    run.getState());
+            getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.currentSegment", -1, 0);
+        } catch (Exception e) {
+            log.error("Start failed: " + e.getMessage());
         }
-
-        setPrivateField(run, "startTime", startTime);
-        setPrivateField(run, "current", 0);
-        setPrivateField(run, "state", Run.State.ONGOING);
-        setPrivateField(run.getSegment(run.getCurrent()), "startTime", startTime);
-
-        getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.state", Run.State.READY,
-                run.getState());
-        getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.currentSegment", -1, 0);
     }
 
 
@@ -140,8 +160,12 @@ public class LlanfairControl {
     }
 
     public void internalUnsplit() {
-        ensureRun();
-        run.unsplit();
+        try {
+            ensureRun();
+            run.unsplit();
+        } catch (Exception e) {
+            log.error("Unsplit failed: " + e.getMessage());
+        }
     }
 
     public void pause(final long stop) {
@@ -155,16 +179,21 @@ public class LlanfairControl {
     }
 
     private void internalPause(long stopTime) {
-        ensureRun();
-        if (run.getState() != Run.State.ONGOING) {
-            throw new IllegalStateException("run is not on-going");
+        try {
+            ensureRun();
+            if (run.getState() != Run.State.ONGOING) {
+                throw new IllegalStateException("run is not on-going");
+            }
+            setPrivateField(run, "state", Run.State.PAUSED);
+            long segmentTime = stopTime - run.getSegment(run.getCurrent()).getStartTime();
+            Time time = new Time(segmentTime);
+            run.getSegment(run.getCurrent()).setTime(time, 3, true);
+            getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.state",
+                    Run.State.ONGOING, run.getState());
+
+        } catch (Exception e) {
+            log.error("Pause failed: " + e.getMessage());
         }
-        setPrivateField(run, "state", Run.State.PAUSED);
-        long segmentTime = stopTime - run.getSegment(run.getCurrent()).getStartTime();
-        Time time = new Time(segmentTime);
-        run.getSegment(run.getCurrent()).setTime(time, 3, true);
-        getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.state",
-                Run.State.ONGOING, run.getState());
     }
 
     public void resume(final long stop) {
@@ -178,25 +207,30 @@ public class LlanfairControl {
     }
 
     private void internalResume(long stop) {
-        ensureRun();
-        if (run.getState() != Run.State.PAUSED) {
-            throw new IllegalStateException("run is not paused");
-        }
-        setPrivateField(run, "state", Run.State.ONGOING);
-        long startTime = stop - run.getTime(run.getCurrent(), 3, false).getMilliseconds();
-        setPrivateField(run, "startTime", startTime);
+        try {
+            ensureRun();
+            if (run.getState() != Run.State.PAUSED) {
+                throw new IllegalStateException("run is not paused");
+            }
+            setPrivateField(run, "state", Run.State.ONGOING);
+            long startTime = stop - run.getTime(run.getCurrent(), 3, false).getMilliseconds();
+            setPrivateField(run, "startTime", startTime);
 
-        Segment crt = run.getSegment(run.getCurrent());
-        setPrivateField(crt, "startTime", stop - crt.getTime(3).getMilliseconds());
+            Segment crt = run.getSegment(run.getCurrent());
+            setPrivateField(crt, "startTime", stop - crt.getTime(3).getMilliseconds());
 
-        long cumulative = 0L;
-        for (int i = 0; i < run.getCurrent(); i++) {
-            Segment iSeg = run.getSegment(i);
-            setPrivateField(iSeg, "startTime", startTime + cumulative);
-            cumulative += iSeg.getTime(3).getMilliseconds();
+            long cumulative = 0L;
+            for (int i = 0; i < run.getCurrent(); i++) {
+                Segment iSeg = run.getSegment(i);
+                setPrivateField(iSeg, "startTime", startTime + cumulative);
+                cumulative += iSeg.getTime(3).getMilliseconds();
+            }
+            getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.state",
+                    Run.State.PAUSED, run.getState());
+
+        } catch (Exception e) {
+            log.error("Resume failed: " + e.getMessage());
         }
-        getPrivateField(run, "pcSupport", PropertyChangeSupport.class).firePropertyChange("run.state",
-                Run.State.PAUSED, run.getState());
     }
 
     public void stop() {
@@ -210,23 +244,62 @@ public class LlanfairControl {
     }
 
     private void internalStop() {
-        ensureRun();
-        run.stop();
+        try {
+            ensureRun();
+            run.stop();
+        } catch (Exception e) {
+            log.error("Stop failed: " + e.getMessage());
+        }
+    }
+
+    private boolean proceedWithOverwrite() {
+        llanfair.setIgnoreNativeInputs(true);
+        boolean betterRun = this.run.isPersonalBest();
+        boolean betterSgt = this.run.hasSegmentsBest();
+
+        if ((betterRun) || (betterSgt)) {
+            String message = betterRun ? Language.WARN_BETTER_RUN.value() : Language.WARN_BETTER_TIMES.value();
+
+            int option = JOptionPane.showConfirmDialog(llanfair, message, Language.WARNING.value(), 1, 2);
+
+            if (option == 2) {
+                llanfair.setIgnoreNativeInputs(false);
+                return false;
+            }
+            if (option == 0) {
+                this.run.saveLiveTimes(!betterRun);
+                this.run.reset();
+                callPrivateMethod(llanfair, "writeFile", Void.class);
+            }
+        }
+        llanfair.setIgnoreNativeInputs(false);
+        return true;
     }
 
     public void reset() {
-        final LlanfairControl c = this;
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                c.internalReset();
-            }
-        });
+        try {
+            final LlanfairControl c = this;
+            ensureRun();
+            Run.State state = run.getState();
+            if (state != Run.State.NULL && (!Settings.WARN_ON_RESET.value() || proceedWithOverwrite()))
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        c.internalReset();
+                    }
+                });
+        } catch (Exception e) {
+            log.error("Reset failed: " + e.getMessage());
+        }
     }
 
     private void internalReset() {
-        ensureRun();
-        run.reset();
+        try {
+            ensureRun();
+            run.reset();
+        } catch (Exception e) {
+            log.error("Reset failed: " + e.getMessage());
+        }
     }
 
     public void skip() {
@@ -240,8 +313,12 @@ public class LlanfairControl {
     }
 
     private void internalSkip() {
-        ensureRun();
-        run.skip();
+        try {
+            ensureRun();
+            run.skip();
+        } catch (Exception e) {
+            log.error("Reset failed: " + e.getMessage());
+        }
     }
 
 }

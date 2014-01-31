@@ -4,6 +4,7 @@ import fr.petitl.antichamber.gui.MonitorFrame;
 import fr.petitl.antichamber.gui.panels.SquareMatrixPanel;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.TriggerType;
+import fr.petitl.antichamber.triggers.save.data.PinkCube;
 import fr.petitl.antichamber.triggers.save.data.Sign;
 
 import javax.swing.*;
@@ -30,9 +31,9 @@ public class PinkWallMonitor extends JFrame implements MonitorFrame {
     @Override
     public void update(GameStatus status) {
         pinkWall.clear();
-        Set<Sign> signs = status.getSigns();
-        for (Sign sign : signs) {
-            pinkWall.add(sign.ordinal());
+        Set<PinkCube> pinkCubes = status.getPinkCubes();
+        for (PinkCube pink : pinkCubes) {
+            pinkWall.add(pink.ordinal());
         }
     }
 }

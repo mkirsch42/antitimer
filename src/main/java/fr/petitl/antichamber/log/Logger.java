@@ -52,6 +52,10 @@ public class Logger {
         e.printStackTrace(out);
     }
 
+    public void error(String message) {
+        print(message, LogLevel.ERROR);
+    }
+
     public void error(String message, Exception e) {
         print(message, LogLevel.ERROR);
         if (e != null)
@@ -74,5 +78,9 @@ public class Logger {
 
     public void trace(String message) {
         print(message, LogLevel.TRACE);
+    }
+
+    public boolean isDebugEnabled() {
+        return (LogLevel.DEBUG.compareTo(level) <= 0);
     }
 }

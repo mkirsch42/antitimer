@@ -33,8 +33,14 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
         EnumSet<MapEntry> mapEntries;
 
         synchronized (save) {
-            if (save.getPlayTime() == 0) {
+            if (save.getPlayTime() == 0 && save.getMapEntries().size() == 1) {
                 listener.saveReset(l);
+                oldSigns.clear();
+                oldSigns.addAll(save.getSigns());
+                oldGuns.clear();
+                oldMapEntries.clear();
+                oldMapEntries.addAll(save.getMapEntries());
+                oldPinkCubes.clear();
                 return;
             }
 
@@ -47,20 +53,6 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
             mapEntries = EnumSet.copyOf(save.getMapEntries());
             mapEntries.removeAll(oldMapEntries);
 
-//
-//            if(!save.getMapEntries().equals(oldMapEntries) || !save.getSigns().equals(oldSigns)) {
-//                try {
-//                    FileWriter fw = new FileWriter(new File("bidule.txt"), true);
-//                    fw.write(save.getSigns().size() + "\r\n-\r\n");
-//                    for (MapEntry s : mapEntries) {
-//                        fw.write(s + "\r\n");
-//                    }
-//                    fw.write("\r\n\r\n");
-//                    fw.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
             saveOldState();
         }
         // release the lock asap
