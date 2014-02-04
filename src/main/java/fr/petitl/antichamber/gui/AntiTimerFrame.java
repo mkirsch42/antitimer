@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Loic Petit
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package fr.petitl.antichamber.gui;
 
 import fr.petitl.antichamber.AntiTimer;
@@ -7,12 +23,12 @@ import fr.petitl.antichamber.gui.panels.Splits;
 import fr.petitl.antichamber.llanfair.LlanfairControl;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.TriggerInfo;
-import org.fenix.llanfair.Llanfair;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +37,13 @@ import java.util.List;
  */
 public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private static final String TITLE = "AntiTimer";
+    private static final String BITBUCKET_LINK = "https://bitbucket.org/WydD/antitimer/wiki/Home";
     private final GunMonitor gun;
     private final MapCompletionMonitor mapCompletion;
     private final MapMonitor map;
     private final PinkWallMonitor pinkWall;
     private final SignWallMonitor signWall;
-    private final SignMonitor sign;
+    private final TriggerMonitor trigger;
     private List<MonitorFrame> frames = new ArrayList<>();
     private LlanfairControl control;
     private Splits splits;
@@ -52,8 +69,8 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         frames.add(pinkWall);
         signWall = new SignWallMonitor();
         frames.add(signWall);
-        sign = new SignMonitor();
-        frames.add(sign);
+        trigger = new TriggerMonitor();
+        frames.add(trigger);
 
         JMenuBar m = new JMenuBar();
         antiTimerMenu(m);
@@ -107,6 +124,19 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         JMenu help = new JMenu("Help");
         JMenuItem instructions = new JMenuItem("Instructions");
         help.add(instructions);
+        instructions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Desktop desktop = Desktop.getDesktop();
+                if(desktop == null)
+                    return;
+                try {
+                    desktop.browse(URI.create(BITBUCKET_LINK));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Weird... cannot open browser... go to " + BITBUCKET_LINK);
+                }
+            }
+        });
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(new ActionListener() {
             @Override
@@ -115,11 +145,12 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                         "Developed by: WydD\n\n" +
                         "Special thanks to:\n" +
                         "\tCrehl (for his early work on the sign tracker)\n" +
-                        "\tCali (for knowing this game)\n" +
+                        "\tCali and Pallidus (for their testing and feedbacks)\n" +
                         "\tAll the Antichamber Speedrunning Community\n\n" +
                         "AntiTimer embeds Llanfair 1.4.3 (“Dante”)\n" +
                         "\tdeveloped by Xunkar\n" +
-                        "\treleased under CC-BY-SA");
+                        "\treleased under CC-BY-SA\n" +
+                        "\tembedded without changes\n");
             }
         });
         help.add(about);
@@ -250,7 +281,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         monitors.add(new MonitorMenuItem(map, "Map"));
         monitors.add(new MonitorMenuItem(mapCompletion, "Map Completion"));
         monitors.add(new MonitorMenuItem(signWall, "Moral Wall"));
-        monitors.add(new MonitorMenuItem(sign, "Latest Sign"));
+        monitors.add(new MonitorMenuItem(trigger, "Triggers"));
         monitors.add(new MonitorMenuItem(pinkWall, "Pink Wall"));
         m.add(monitors);
     }

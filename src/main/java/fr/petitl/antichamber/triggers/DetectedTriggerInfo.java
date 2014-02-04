@@ -14,15 +14,25 @@
  * limitations under the License.
  */
 
-package fr.petitl.antichamber.log;
+package fr.petitl.antichamber.triggers;
 
 /**
  *
  */
-public enum LogLevel {
-    ERROR,
-    WARN,
-    INFO,
-    DEBUG,
-    TRACE
+public class DetectedTriggerInfo {
+    private long timestamp;
+    private TriggerInfo triggerInfo;
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public TriggerInfo getTriggerInfo() {
+        return triggerInfo;
+    }
+
+    public DetectedTriggerInfo(long timestamp, TriggerInfo triggerInfo) {
+        this.timestamp = timestamp;
+        this.triggerInfo = triggerInfo;
+    }
 }

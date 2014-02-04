@@ -1,9 +1,27 @@
+/*
+ * Copyright 2014 Loic Petit
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package fr.petitl.antichamber.triggers.watchers;
 
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Set;
 
+import fr.petitl.antichamber.triggers.TriggerInfo;
+import fr.petitl.antichamber.triggers.TriggerType;
 import fr.petitl.antichamber.triggers.save.*;
 import fr.petitl.antichamber.triggers.save.data.Gun;
 import fr.petitl.antichamber.triggers.save.data.MapEntry;
@@ -33,14 +51,9 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
         EnumSet<MapEntry> mapEntries;
 
         synchronized (save) {
-            if (save.getPlayTime() == 0 && save.getMapEntries().size() == 1) {
+            if (save.getNbTriggers() == 0 && save.getPlayTime() == 0) {
                 listener.saveReset(l);
-                oldSigns.clear();
-                oldSigns.addAll(save.getSigns());
-                oldGuns.clear();
-                oldMapEntries.clear();
-                oldMapEntries.addAll(save.getMapEntries());
-                oldPinkCubes.clear();
+                saveOldState();
                 return;
             }
 
@@ -59,8 +72,16 @@ public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
         for (Sign sign : signs) {
             listener.newSign(sign, oldSigns.size(), l);
         }
+
+        int pinkSize = oldPinkCubes.size();
+        // fix the pink completion problem
+        if(oldPinkCubes.contains(PinkCube.OOB))
+            pinkSize--;
+        if(oldPinkCubes.contains(PinkCube.GLITCHED_GALLERY))
+            pinkSize--;
+
         for (PinkCube pinkCube : pinkCubes) {
-            listener.newSecret(pinkCube, oldPinkCubes.size(), l);
+            listener.newSecret(pinkCube, pinkSize, l);
         }
         for (Gun gun : guns) {
             listener.newGun(gun, oldGuns.size(), l);

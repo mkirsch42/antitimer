@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fr.petitl.antichamber.gui.panels.TriggerTrackerPanel">
+  <grid id="27dc6" binding="content" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="ca1cd" layout-manager="GridBagLayout">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="26bc0" class="javax.swing.JCheckBox" binding="gunsCheckBox" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value="Guns"/>
+            </properties>
+          </component>
+          <component id="69330" class="javax.swing.JCheckBox" binding="signsCheckBox" default-binding="true">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value="Signs"/>
+            </properties>
+          </component>
+          <component id="f4b3f" class="javax.swing.JCheckBox" binding="pinkCubesCheckBox" default-binding="true">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value="Pink Cubes"/>
+            </properties>
+          </component>
+          <component id="9d8d9" class="javax.swing.JCheckBox" binding="mapCheckBox" default-binding="true">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <text value="Map"/>
+            </properties>
+          </component>
+          <component id="e062a" class="javax.swing.JCheckBox" binding="creditsCheckBox" default-binding="true">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <selected value="true"/>
+              <text value="Credits"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="47dac" binding="scroll">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="3c3a8" class="javax.swing.JTable" binding="triggerTable">
+            <constraints/>
+            <properties>
+              <background color="-16777216"/>
+              <font size="14"/>
+              <foreground color="-1"/>
+              <gridColor color="-3355444"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+    </children>
+  </grid>
+</form>

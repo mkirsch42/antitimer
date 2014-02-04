@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Loic Petit
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package fr.petitl.antichamber.triggers;
 
 import fr.petitl.antichamber.log.Logger;
@@ -14,10 +30,8 @@ import fr.petitl.antichamber.triggers.watchers.SaveFileWatcher;
 import java.awt.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -32,9 +46,13 @@ public class GameStatus {
     private StatusChangeListener scl;
     private boolean isCurrentlyRunning;
     private Sign latestSign;
-    private Set<TriggerInfo> splitIndex = new HashSet<>();
-    private long startTimestamp;
+    private List<TriggerInfo> splits = new ArrayList<>();
+    private int splitIdx = 0;
+
+    private long startTimestamp =  System.nanoTime() / 1000000L;
     private List<TriggerInfo> endingConditions;
+    private Set<TriggerType> triggerComplete = EnumSet.noneOf(TriggerType.class);
+    private List<DetectedTriggerInfo> detectedTriggers = new ArrayList<>();
     private boolean creditsFounds;
 
     public GameStatus(AntichamberSave save, LogFile log, int theEndSpammerKeyCode, SplitEngine splitEngine, StatusChangeListener scl) throws IOException {
@@ -44,8 +62,9 @@ public class GameStatus {
         Watcher w = new Watcher();
         saveFileWatcher = new SaveFileWatcher(save, w);
         new LogFileWatcher(log, w);
-        splitIndex.clear();
+        splits.clear();
         latestSign = Sign.SIGN_0;
+        triggerComplete.clear();
         isCurrentlyRunning = false;
         creditsFounds = false;
         startTimestamp = 0;
@@ -54,6 +73,8 @@ public class GameStatus {
     public void reset() {
         scl.gameStatusHasChanged();
         latestSign = Sign.SIGN_0;
+        triggerComplete.clear();
+        detectedTriggers.clear();
         isCurrentlyRunning = false;
         creditsFounds = false;
         startTimestamp = 0;
@@ -78,11 +99,8 @@ public class GameStatus {
     }
 
     public void setSplits(List<TriggerInfo> splits) {
-        splitIndex.clear();
         log.debug("Setting new conditions");
-        for (TriggerInfo split : splits) {
-            splitIndex.add(split);
-        }
+        this.splits = new ArrayList<>(splits);
     }
 
     public void setEndingConditions(List<TriggerInfo> endingConditions) {
@@ -166,26 +184,43 @@ public class GameStatus {
     }
 
     private <E> void genericTrigger(TriggerType type, E g, int count, long timestamp) {
+        TriggerInfo trigger = new TriggerInfo(type, g, false);
+        detectedTriggers.add(new DetectedTriggerInfo(timestamp, trigger));
+        if (count == type.getMaxInstances() && !triggerComplete.contains(type)) {
+            TriggerInfo completeTrigger = new TriggerInfo(type, null, true);
+            triggerComplete.add(type);
+            detectedTriggers.add(new DetectedTriggerInfo(timestamp, completeTrigger));
+        }
         log.info("Triggered " + type.toString() + " (" + count + "/" + type.getMaxInstances() + "): " + g);
-        if(isCurrentlyRunning) {
-            TriggerInfo trigger = new TriggerInfo(type, g, false);
-            if (splitIndex.contains(trigger)) {
+        if(isCurrentlyRunning && splitIdx < splits.size()) {
+            TriggerInfo toMatch = splits.get(splitIdx);
+            if (trigger.equals(toMatch)) {
                 log.info("\t" + sdf.format(new Date(timestamp - startTimestamp)) + " Split (selected)");
                 // damn I don't like that
                 splitEngine.fireSplit(timestamp);
+                splitIdx++;
+                if(splitIdx < splits.size())
+                    toMatch = splits.get(splitIdx); // useless but security first
             }
             if (count == type.getMaxInstances()) {
                 trigger.setMustBeComplete(true);
-                if (splitIndex.contains(trigger)) {
+                if (trigger.equals(toMatch)) {
                     log.info("\t" + sdf.format(new Date(timestamp - startTimestamp)) + " Split (complete)");
                     // damn I don't like that
                     splitEngine.fireSplit(timestamp);
+                    splitIdx++;
                 }
             }
         }
         checkEndingConditions(timestamp);
         scl.gameStatusHasChanged();
     }
+
+    public List<DetectedTriggerInfo> getDetectedTriggers() {
+        return detectedTriggers;
+    }
+
+
 
     private class Watcher implements SaveChangeListener, LogChangeListener {
         private long spamUntil = System.currentTimeMillis();
@@ -234,8 +269,7 @@ public class GameStatus {
             spamUntil = 0;
             log.info("The end!");
             creditsFounds = true;
-            checkEndingConditions(timestamp);
-            scl.gameStatusHasChanged();
+            genericTrigger(TriggerType.FINISH_GAME, null, 1, timestamp);
         }
 
         @Override
@@ -277,5 +311,9 @@ public class GameStatus {
                 throw new IllegalStateException("Could not create robot?", e);
             }
         }
+    }
+
+    public long getStartTimestamp() {
+        return startTimestamp;
     }
 }
