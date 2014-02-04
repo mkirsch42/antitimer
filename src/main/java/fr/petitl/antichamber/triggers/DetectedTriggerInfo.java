@@ -21,6 +21,7 @@ package fr.petitl.antichamber.triggers;
  */
 public class DetectedTriggerInfo {
     private long timestamp;
+    private int count;
     private TriggerInfo triggerInfo;
 
     public long getTimestamp() {
@@ -31,8 +32,13 @@ public class DetectedTriggerInfo {
         return triggerInfo;
     }
 
-    public DetectedTriggerInfo(long timestamp, TriggerInfo triggerInfo) {
+    public DetectedTriggerInfo(long timestamp, int count, TriggerInfo triggerInfo) {
         this.timestamp = timestamp;
+        this.count = count;
         this.triggerInfo = triggerInfo;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

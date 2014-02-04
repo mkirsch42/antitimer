@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class TriggerTableModel extends AbstractTableModel {
     public TriggerTableModel() {
     }
 
-    private List<DetectedTriggerInfo> triggers = new ArrayList<>();
+    private List<DetectedTriggerInfo> triggers = new LinkedList<>();
     private long startTimestamp;
 
     @Override
@@ -59,6 +60,8 @@ public class TriggerTableModel extends AbstractTableModel {
             case 1:
                 return "Type";
             case 2:
+                return "Count";
+            case 3:
                 return "Detail";
         }
         throw new IllegalArgumentException("Unknown column index " + column);
@@ -72,21 +75,27 @@ public class TriggerTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 3;
+        return 4;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        DetectedTriggerInfo trigger = triggers.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return " " + sdf.format(new Date(trigger.getTimestamp() - startTimestamp))+" ";
-            case 1:
-                return " "+trigger.getTriggerInfo().getType().toString() +" ";
-            case 2:
-                return " "+(trigger.getTriggerInfo().mustBeComplete() ? "Complete!" : trigger.getTriggerInfo().getArgumentToMatch())+" ";
+        try {
+            DetectedTriggerInfo trigger = triggers.get(rowIndex);
+            switch (columnIndex) {
+                case 0:
+                    return " " + sdf.format(new Date(trigger.getTimestamp() - startTimestamp)) + " ";
+                case 1:
+                    return " " + trigger.getTriggerInfo().getType().toString() + " ";
+                case 2:
+                    return " " + trigger.getCount() + " ";
+                case 3:
+                    return " " + (trigger.getTriggerInfo().mustBeComplete() ? "Complete!" : trigger.getTriggerInfo().getArgumentToMatch()) + " ";
+            }
+            throw new IllegalArgumentException("Unknown column index " + columnIndex);
+        } catch (Exception e) {
+            return "";
         }
-        throw new IllegalArgumentException("Unknown column index " + columnIndex);
     }
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("mm:ss.SSS");
@@ -97,24 +106,24 @@ public class TriggerTableModel extends AbstractTableModel {
         for (DetectedTriggerInfo detectedTriggerInfo : detectedTriggerInfos) {
             switch (detectedTriggerInfo.getTriggerInfo().getType()) {
                 case GUN:
-                    if(guns)
-                        triggers.add(detectedTriggerInfo);
+                    if (guns)
+                        triggers.add(0, detectedTriggerInfo);
                     break;
                 case SIGN:
-                    if(signs)
-                        triggers.add(detectedTriggerInfo);
+                    if (signs)
+                        triggers.add(0, detectedTriggerInfo);
                     break;
                 case PINK_CUBE:
-                    if(pinks)
-                        triggers.add(detectedTriggerInfo);
+                    if (pinks)
+                        triggers.add(0, detectedTriggerInfo);
                     break;
                 case MAP_UPDATE:
-                    if(map)
-                        triggers.add(detectedTriggerInfo);
+                    if (map)
+                        triggers.add(0, detectedTriggerInfo);
                     break;
                 case FINISH_GAME:
-                    if(credits)
-                        triggers.add(detectedTriggerInfo);
+                    if (credits)
+                        triggers.add(0, detectedTriggerInfo);
                     break;
             }
         }

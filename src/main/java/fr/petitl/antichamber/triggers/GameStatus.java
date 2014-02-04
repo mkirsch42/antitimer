@@ -78,6 +78,7 @@ public class GameStatus {
         isCurrentlyRunning = false;
         creditsFounds = false;
         startTimestamp = 0;
+        splitIdx = 0;
         splitEngine.fireReset();
         log.info("Reset!");
     }
@@ -185,12 +186,13 @@ public class GameStatus {
 
     private <E> void genericTrigger(TriggerType type, E g, int count, long timestamp) {
         TriggerInfo trigger = new TriggerInfo(type, g, false);
-        detectedTriggers.add(new DetectedTriggerInfo(timestamp, trigger));
+        detectedTriggers.add(new DetectedTriggerInfo(timestamp, count, trigger));
         if (count == type.getMaxInstances() && !triggerComplete.contains(type)) {
             TriggerInfo completeTrigger = new TriggerInfo(type, null, true);
             triggerComplete.add(type);
-            detectedTriggers.add(new DetectedTriggerInfo(timestamp, completeTrigger));
+            detectedTriggers.add(new DetectedTriggerInfo(timestamp, count, completeTrigger));
         }
+        trigger = new TriggerInfo(type, g, false);
         log.info("Triggered " + type.toString() + " (" + count + "/" + type.getMaxInstances() + "): " + g);
         if(isCurrentlyRunning && splitIdx < splits.size()) {
             TriggerInfo toMatch = splits.get(splitIdx);

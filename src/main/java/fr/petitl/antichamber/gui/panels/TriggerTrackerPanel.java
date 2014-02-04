@@ -17,8 +17,6 @@
 package fr.petitl.antichamber.gui.panels;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,19 +36,8 @@ public class TriggerTrackerPanel {
     private JScrollPane scroll;
 
     public TriggerTrackerPanel() {
-        TableModelListener l = new TableModelListener() {
-            @Override
-            public void tableChanged(final TableModelEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        triggerTable.scrollRectToVisible(triggerTable.getCellRect(triggerTable.getRowCount() - 1, 0, true));
-                    }
-                });
-            }
-        };
         model = new TriggerTableModel();
         triggerTable.setModel(model);
-        triggerTable.getModel().addTableModelListener(l);
         ActionListener onCheckbox = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,8 +51,7 @@ public class TriggerTrackerPanel {
         creditsCheckBox.addActionListener(onCheckbox);
         onCheckbox.actionPerformed(null);
         scroll.getViewport().setBackground(Color.BLACK);
-        triggerTable.getColumnModel().getColumn(0).setMaxWidth(200);
-        triggerTable.getColumnModel().getColumn(1).setMaxWidth(200);
+        triggerTable.getColumnModel().getColumn(0).setMaxWidth(250);
     }
 
     public JPanel getContent() {
