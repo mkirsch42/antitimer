@@ -28,6 +28,8 @@ public class ResizableLabel extends JLabel {
     public static final int MIN_FONT_SIZE = 3;
     public static final int MAX_FONT_SIZE = 240;
     private Graphics g;
+    private String fontSizeText;
+    private double fontSizeRatio = 1;
 
     public ResizableLabel() {
         init();
@@ -39,6 +41,14 @@ public class ResizableLabel extends JLabel {
                 adaptLabelFont(ResizableLabel.this);
             }
         });
+    }
+
+    public void setFontSizeText(String fontSizeText) {
+        this.fontSizeText = fontSizeText;
+    }
+
+    public void setFontSizeRatio(double fontSizeRatio) {
+        this.fontSizeRatio = fontSizeRatio;
     }
 
     protected void adaptLabelFont(JLabel l) {
@@ -55,8 +65,8 @@ public class ResizableLabel extends JLabel {
         Rectangle r2 = new Rectangle();
         // guaranteed convergence in 8 passes
         while (ratio < 256) {
-            r1.setSize(getTextSize(l, f.deriveFont(f.getStyle(), (float) fontSize)));
-            r2.setSize(getTextSize(l, f.deriveFont(f.getStyle(), (float) (fontSize + 1))));
+            r1.setSize(getTextSize(f.deriveFont(f.getStyle(), (float) fontSize), l.getText()));
+            r2.setSize(getTextSize(f.deriveFont(f.getStyle(), (float) (fontSize + 1)), l.getText()));
             boolean lower = r.contains(r1);
             if (lower && !r.contains(r2)) {
                 break;
@@ -73,11 +83,13 @@ public class ResizableLabel extends JLabel {
         repaint();
     }
 
-    private Dimension getTextSize(JLabel l, Font f) {
+    private Dimension getTextSize(Font f, String text) {
         Dimension size = new Dimension();
         g.setFont(f);
         FontMetrics fm = g.getFontMetrics(f);
-        size.width = (int) (fm.stringWidth(l.getText()) * 1.1);
+        if(fontSizeText != null)
+            text = fontSizeText;
+        size.width = (int) (fm.stringWidth(text) * 1.1 * fontSizeRatio);
         size.height = fm.getHeight();
 
         return size;

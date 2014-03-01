@@ -27,7 +27,7 @@ import fr.petitl.antichamber.triggers.save.data.Sign;
 public enum TriggerType {
     GUN(Gun.values().length, "Gun"), //
     SIGN(Sign.values().length, "Sign"), //
-    PINK_CUBE(PinkCube.OOB.ordinal(), "Pink Cube"), //
+    PINK_CUBE(13, "Pink Cube"), //
     MAP_UPDATE(MapEntry.values().length, "Map Entries"), // To correct...
     FINISH_GAME(1, "Credits");
 

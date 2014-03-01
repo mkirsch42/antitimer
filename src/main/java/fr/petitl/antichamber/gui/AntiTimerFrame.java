@@ -44,6 +44,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private final PinkWallMonitor pinkWall;
     private final SignWallMonitor signWall;
     private final TriggerMonitor trigger;
+    private final LatestSignMonitor latestSign;
     private List<MonitorFrame> frames = new ArrayList<>();
     private LlanfairControl control;
     private Splits splits;
@@ -71,6 +72,8 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         frames.add(signWall);
         trigger = new TriggerMonitor();
         frames.add(trigger);
+        latestSign = new LatestSignMonitor();
+        frames.add(latestSign);
 
         JMenuBar m = new JMenuBar();
         antiTimerMenu(m);
@@ -277,12 +280,13 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
 
     private void monitorMenu(JMenuBar m) {
         JMenu monitors = new JMenu("Monitors");
-        monitors.add(new MonitorMenuItem(gun, "Current Gun"));
         monitors.add(new MonitorMenuItem(map, "Map"));
-        monitors.add(new MonitorMenuItem(mapCompletion, "Map Completion"));
         monitors.add(new MonitorMenuItem(signWall, "Moral Wall"));
-        monitors.add(new MonitorMenuItem(trigger, "Triggers"));
         monitors.add(new MonitorMenuItem(pinkWall, "Pink Wall"));
+        monitors.add(new MonitorMenuItem(trigger, "Triggers"));
+        monitors.add(new MonitorMenuItem(latestSign, "Latest Sign"));
+        monitors.add(new MonitorMenuItem(gun, "Current Gun"));
+        monitors.add(new MonitorMenuItem(mapCompletion, "Map Completion"));
         m.add(monitors);
     }
 
