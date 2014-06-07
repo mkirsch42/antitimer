@@ -86,7 +86,7 @@ Changelog
 ------
 
 #### 0.1.1
-* Fixing Issue#1: Restart level causes reset. https://bitbucket.org/WydD/antitimer/issue/2/log-watcher-sometimes-not-synced
+* Fixing Issue#1: Restart level causes reset
 * Fixing Issue#2: Log watcher sometimes not synced
 * Fixing lag issues. File watchers are now updated every 5ms instead of 1ms and load latency has been augmented to 80ms instead of 10ms.
 
@@ -95,6 +95,12 @@ Fixing various stability issues. Considered, first stable release.
 
 #### 0.1
 First release
+
+What's to come in future release?
+------
+* LiveSplit support (thanks to the support of CryZe)
+* Timer backend selection and disabling timer for explaratory purposes.
+* Configuration panel.
 
 Happy Running!
 
