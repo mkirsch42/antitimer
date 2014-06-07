@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class LogFile implements FileReader {
     private static final Logger log = Logger.getLogger(LogFile.class);
     private static final String LOADING_SAVED_GAME = "ScriptLog: Loading saved game";
-    private static final String FINISHED_LOADING_SAVED_GAME = "Kismet: HazardTriggerTriggered!";
+    private static final String FINISHED_LOADING_SAVED_GAME = "Kismet: Music 0_0 start";
     private long lastMapClick = 0;
     private long lastFiringGhost = 0;
     private double dyingWorldTime = 0;
