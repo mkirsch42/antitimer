@@ -40,7 +40,7 @@ public abstract class FileWatcher<E extends FileReader> implements Runnable {
     public void run() {
         try {
             while (true) {
-                Thread.sleep(1);
+                Thread.sleep(5);
                 long t = file.lastModified();
                 long s = file.length();
                 long l = System.nanoTime() / 1000000L;
@@ -49,7 +49,7 @@ public abstract class FileWatcher<E extends FileReader> implements Runnable {
                 lastCheckedTime = t;
                 lastCheckedSize = s;
                 // we have detected a change... wait for the writer to finish
-                Thread.sleep(10);
+                Thread.sleep(80);
 
                 save.read();
                 fileUpdated(l);
