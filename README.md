@@ -34,7 +34,7 @@ Before ``bInvertMouse=...``
 How to run this thing?
 ------
 #### Environment
-You need an up-to-date Java environment on your desktop. If you don't, download it at http://java.com/getjava 
+You need an up-to-date Java environment on your desktop (java7). If you don't, download it at http://java.com/getjava 
 
 Now, just launch the jar file (double-clicking works if you have java installed).
 
