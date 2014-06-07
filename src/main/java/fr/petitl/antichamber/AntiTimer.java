@@ -17,7 +17,8 @@
 package fr.petitl.antichamber;
 
 import fr.petitl.antichamber.gui.AntiTimerFrame;
-import fr.petitl.antichamber.llanfair.LlanfairControl;
+import fr.petitl.antichamber.timer.LlanfairControl;
+import fr.petitl.antichamber.timer.TimerControl;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.SplitEngine;
 import fr.petitl.antichamber.triggers.StatusChangeListener;
@@ -36,7 +37,7 @@ import java.io.IOException;
  */
 public class AntiTimer implements StatusChangeListener, SplitEngine {
     public final static String VERSION = "0.1";
-    private LlanfairControl control;
+    private TimerControl control;
     private AntiTimerFrame frame;
     private GameStatus gameStatus;
 

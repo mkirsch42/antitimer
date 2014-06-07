@@ -20,7 +20,7 @@ import fr.petitl.antichamber.AntiTimer;
 import fr.petitl.antichamber.Configuration;
 import fr.petitl.antichamber.gui.monitors.*;
 import fr.petitl.antichamber.gui.panels.Splits;
-import fr.petitl.antichamber.llanfair.LlanfairControl;
+import fr.petitl.antichamber.timer.TimerControl;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.TriggerInfo;
 
@@ -47,13 +47,13 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private final TriggerMonitor trigger;
     private final LatestSignMonitor latestSign;
     private List<MonitorFrame> frames = new ArrayList<>();
-    private LlanfairControl control;
+    private TimerControl control;
     private Splits splits;
     private File saveFile;
     private GameStatus status;
     private Configuration cfg;
 
-    public AntiTimerFrame(LlanfairControl control, GameStatus status, Configuration cfg) {
+    public AntiTimerFrame(TimerControl control, GameStatus status, Configuration cfg) {
         super(TITLE);
 
         this.control = control;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fr.petitl.antichamber.llanfair;
+package fr.petitl.antichamber.timer;
 
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Field;
@@ -30,7 +30,7 @@ import javax.swing.*;
 /**
  *
  */
-public class LlanfairControl {
+public class LlanfairControl implements TimerControl {
     private static Logger log = Logger.getLogger(LlanfairControl.class);
     private Run run;
     private Llanfair llanfair;
@@ -44,10 +44,12 @@ public class LlanfairControl {
         return run;
     }
 
+    @Override
     public void exit() {
         llanfair.windowClosed(null);
     }
 
+    @Override
     public void buildAndInjectRun(String name, List<TriggerInfo> splits) {
         Run r = new Run("Antichamber (" + name + ")");
         for (TriggerInfo trigger : splits) {
@@ -96,6 +98,7 @@ public class LlanfairControl {
         }
     }
 
+    @Override
     public void split(final long stopTime) {
         final LlanfairControl c = this;
         SwingUtilities.invokeLater(new Runnable() {
@@ -130,6 +133,7 @@ public class LlanfairControl {
     }
 
 
+    @Override
     public void start(final long stopTime) {
         final LlanfairControl c = this;
         SwingUtilities.invokeLater(new Runnable() {
@@ -292,6 +296,7 @@ public class LlanfairControl {
         return true;
     }
 
+    @Override
     public void reset() {
         try {
             final LlanfairControl c = this;
