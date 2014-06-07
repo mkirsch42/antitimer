@@ -48,8 +48,8 @@ Add a split by clicking on the "+", select the trigger type and the goal. You ca
 
 Do the same thing with the completion conditions, do remember that those are additive. For example, if you select:
 
- * Sign / Complete
- * Map / Complete
+* Sign / Complete
+* Map / Complete
 
 The game will stop the timer if and only if you have all signs and map is 100%.
 
@@ -65,12 +65,12 @@ Monitors
 ------
 There are 6 monitors built-in AntiTimer which enable you to track the game state.
 
- * Current Gun: displays the color of the gun you currently have.
- * Map: displays the map as it can be seen in the hub.
- * Map Completion: displays a percentage of map completion.
- * Moral Wall: displays the moral wall aka the sign wall. Each box represents a sign with the same order as the moral wall inside the hub.
- * Triggers: displays all the triggers that are happening inside antitimer.
- * Pink Wall: displays the pink cubes you have. Their order is not important (actually it is displayed using the pink route of the current WR).
+* Current Gun: displays the color of the gun you currently have.
+* Map: displays the map as it can be seen in the hub.
+* Map Completion: displays a percentage of map completion.
+* Moral Wall: displays the moral wall aka the sign wall. Each box represents a sign with the same order as the moral wall inside the hub.
+* Triggers: displays all the triggers that are happening inside antitimer.
+* Pink Wall: displays the pink cubes you have. Their order is not important (actually it is displayed using the pink route of the current WR).
 
 All window positions are saved each time they are moved so you will recover the same layout the next time you launch AntiTimer.
 
