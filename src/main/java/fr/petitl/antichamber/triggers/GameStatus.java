@@ -60,7 +60,7 @@ public class GameStatus {
         this.splitEngine = splitEngine;
         this.scl = scl;
         Watcher w = new Watcher();
-        saveFileWatcher = new SaveFileWatcher(save, w);
+        saveFileWatcher = new SaveFileWatcher(save, w, log);
         new LogFileWatcher(log, w);
         splits.clear();
         latestSign = Sign.SIGN_0;

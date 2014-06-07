@@ -38,6 +38,7 @@ import java.util.List;
 public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private static final String TITLE = "AntiTimer";
     private static final String BITBUCKET_LINK = "https://bitbucket.org/WydD/antitimer/wiki/Home";
+    private static final long serialVersionUID = -2200305139211369118L;
     private final GunMonitor gun;
     private final MapCompletionMonitor mapCompletion;
     private final MapMonitor map;
@@ -306,6 +307,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
     }
 
     private class MonitorMenuItem extends JCheckBoxMenuItem implements ActionListener, WindowListener {
+        private static final long serialVersionUID = -7209267553708481233L;
         private final MonitorFrame frame;
 
         private MonitorMenuItem(MonitorFrame frame, String label) {

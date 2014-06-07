@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Set;
 
-import fr.petitl.antichamber.triggers.TriggerInfo;
-import fr.petitl.antichamber.triggers.TriggerType;
+import fr.petitl.antichamber.log.Logger;
+import fr.petitl.antichamber.triggers.logger.LogFile;
 import fr.petitl.antichamber.triggers.save.*;
 import fr.petitl.antichamber.triggers.save.data.Gun;
 import fr.petitl.antichamber.triggers.save.data.MapEntry;
@@ -32,19 +32,33 @@ import fr.petitl.antichamber.triggers.save.data.Sign;
  *
  */
 public class SaveFileWatcher extends FileWatcher<AntichamberSave> {
-
+    private static final Logger log = Logger.getLogger(SaveFileWatcher.class);
+    private final AntichamberSave save;
     private SaveChangeListener listener;
+    private final LogFile logFile;
     private Set<PinkCube> oldPinkCubes = EnumSet.noneOf(PinkCube.class);
     private Set<Sign> oldSigns = EnumSet.noneOf(Sign.class);
     private Set<Gun> oldGuns = EnumSet.noneOf(Gun.class);
     private Set<MapEntry> oldMapEntries = EnumSet.noneOf(MapEntry.class);
 
-    public SaveFileWatcher(AntichamberSave save, SaveChangeListener listener) throws IOException {
+    public SaveFileWatcher(AntichamberSave save, SaveChangeListener listener, LogFile logFile) throws IOException {
         super(save);
+        this.save = save;
         this.listener = listener;
+        this.logFile = logFile;
     }
 
     protected void fileUpdated(long l) {
+        // ensure that logFile is updated
+        try {
+            logFile.read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        if(logFile.isLoadingSave()) {
+            log.debug("Game is currently loading his save so... I'm preventing this update!");
+            return;
+        }
         Set<Sign> signs;
         Set<PinkCube> pinkCubes;
         Set<Gun> guns;

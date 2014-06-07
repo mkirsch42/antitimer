@@ -89,28 +89,28 @@ public class AntichamberSave implements FileReader {
         switch (propName) {
             case "PlayTime":
                 playTime = readFloatProperty(in);
-                log.debug("Play time: " + playTime);
+                //log.trace("Play time: " + playTime);
                 break;
             case "bHiddenSignHints":
                 hiddenSignHints = readBoolProperty(in);
-                log.debug("Hidden sign: " + hiddenSignHints);
+                //log.trace("Hidden sign: " + hiddenSignHints);
                 break;
             case "SavedPickups":
-                log.debug("Gun");
+                //log.trace("Gun");
                 for (String prop : readArrayProperty(in)) {
                     Gun gun = Gun.fromString(prop);
                     guns.add(gun);
-                    log.debug("\t" + gun.name());
+                    log.trace("\t" + gun.name());
                 }
                 break;
             case "SavedSecrets":
-                log.debug("Secrets");
+                //log.trace("Secrets");
                 for (String prop : readArrayProperty(in)) {
                     PinkCube s = PinkCube.fromString(prop);
                     if (s == null)
                         continue;
                     pinkCubes.add(s);
-                    log.debug("\t" + prop);
+                    //log.trace("\t" + prop);
                 }
                 break;
             case "SavedTriggers":
@@ -127,11 +127,11 @@ public class AntichamberSave implements FileReader {
                 }
                 break;
             case "MapArray":
-                log.debug("Map");
+                //log.trace("Map");
                 readArrayProperty(in);
                 break;
             default:
-                log.debug("Skipping unused property " + propName + "[" + propType + "]");
+                //log.trace("Skipping unused property " + propName + "[" + propType + "]");
                 readProperty(in, propType);
                 break;
         }
