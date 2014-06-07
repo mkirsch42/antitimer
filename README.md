@@ -82,6 +82,19 @@ About Antitimer
 ------
 It has been coded with love by Loic Petit (WydD). You can find me on http://twitch.tv/wyddgames all my other contact infos are there. The code has been released on Apache 2 Licence, don't hesitate to contribute and/or steal my code.
 
+Changelog
+------
+
+#### 0.1.1
+* Fixing Issue#1: Restart level causes reset. https://bitbucket.org/WydD/antitimer/issue/2/log-watcher-sometimes-not-synced
+* Fixing Issue#2: Log watcher sometimes not synced
+* Fixing lag issues. File watchers are now updated every 5ms instead of 1ms and load latency has been augmented to 80ms instead of 10ms.
+
+#### 0.1.0.3
+Fixing various stability issues. Considered, first stable release.
+
+#### 0.1
+First release
 
 Happy Running!
 
