@@ -85,6 +85,9 @@ It has been coded with love by Loic Petit (WydD). You can find me on http://twit
 Changelog
 ------
 
+#### 0.1.2
+* Fixing error management during save reading. This problem could (and have) lead to a random reset. (reported by Murklan)
+
 #### 0.1.1
 * Fixing Issue#1: Restart level causes reset
 * Fixing Issue#2: Log watcher sometimes not synced
