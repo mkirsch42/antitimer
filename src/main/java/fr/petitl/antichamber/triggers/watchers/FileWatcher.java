@@ -46,13 +46,14 @@ public abstract class FileWatcher<E extends FileReader> implements Runnable {
                 long l = System.nanoTime() / 1000000L;
                 if (lastCheckedTime >= t && lastCheckedSize >= s)
                     continue;
-                lastCheckedTime = t;
-                lastCheckedSize = s;
                 // we have detected a change... wait for the writer to finish
-                Thread.sleep(80);
+                Thread.sleep(50);
 
-                save.read();
-                fileUpdated(l);
+                if(save.read()) {
+                    fileUpdated(l);
+                    lastCheckedTime = t;
+                    lastCheckedSize = s;
+                }
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

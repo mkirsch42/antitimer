@@ -54,7 +54,7 @@ public class LogFile implements FileReader {
     }
 
     @Override
-    public void read() throws IOException {
+    public boolean read() throws IOException {
         long len = file.length();
         if (len < offset) {
             // Log must have been jibbled or deleted.
@@ -78,6 +78,7 @@ public class LogFile implements FileReader {
             offset = raf.getFilePointer();
             raf.close();
         }
+        return true;
     }
 
     private void processLine(String line, long filePointer) {

@@ -58,4 +58,11 @@ public class AntichamberSaveTest {
         }
         Assert.assertEquals(result.size(), 13);
     }
+
+    @Test
+    public void test() throws IOException {
+        AntichamberSave a = new AntichamberSave(new File("/Users/petitl/Library/Application Support/Unreal Tournament 3/SavedGame.bin"));
+        a.read();
+        System.out.println(a);
+    }
 }

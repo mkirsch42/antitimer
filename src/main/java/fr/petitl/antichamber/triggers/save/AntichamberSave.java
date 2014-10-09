@@ -54,20 +54,21 @@ public class AntichamberSave implements FileReader {
     }
 
     @Override
-    public synchronized void read() throws IOException {
-        guns.clear();
-        pinkCubes.clear();
-        signs.clear();
-        signs.add(Sign.SIGN_0);
-        mapEntries.clear();
-        mapEntries.add(MapEntry.ENTRY_6_3);
-        playTime = 0;
-        nbTriggers = 0;
-        hiddenSignHints = false;
-
-        log.debug("Reading file " + file.getAbsolutePath());
+    public synchronized boolean read() throws IOException {
         int retry = 3;
         do {
+            guns.clear();
+            pinkCubes.clear();
+            signs.clear();
+            signs.add(Sign.SIGN_0);
+            mapEntries.clear();
+            mapEntries.add(MapEntry.ENTRY_6_3);
+            playTime = 0;
+            nbTriggers = 0;
+            hiddenSignHints = false;
+
+            log.debug("Reading file " + file.getAbsolutePath()+" retry "+retry);
+
             try (InputStream in = new FileInputStream(file)) {
                 readLittleEndian(in, 4);
                 readLittleEndian(in, 4);
@@ -78,25 +79,34 @@ public class AntichamberSave implements FileReader {
 
                     propName = readString(in);
                 }
-                break;
+                return true;
             } catch (Exception e) {
+                log.error("Error while loading the file retrying... "+retry, e);
+                try {
+                    // Sleeping a bunch to let antichamber write its data
+                    Thread.sleep(10);
+                } catch (InterruptedException e1) {
+                    break;
+                }
                 retry--;
             }
         } while (retry > 0);
+        log.warn("Could not read file in time... abandon ship!", null);
+        return false;
     }
 
     private void parse(InputStream in, String propName, String propType) throws IOException {
         switch (propName) {
             case "PlayTime":
                 playTime = readFloatProperty(in);
-                //log.trace("Play time: " + playTime);
+                log.trace("Play time: " + playTime);
                 break;
             case "bHiddenSignHints":
                 hiddenSignHints = readBoolProperty(in);
-                //log.trace("Hidden sign: " + hiddenSignHints);
+                log.trace("Hidden sign: " + hiddenSignHints);
                 break;
             case "SavedPickups":
-                //log.trace("Gun");
+                log.trace("Gun");
                 for (String prop : readArrayProperty(in)) {
                     Gun gun = Gun.fromString(prop);
                     guns.add(gun);
@@ -104,13 +114,13 @@ public class AntichamberSave implements FileReader {
                 }
                 break;
             case "SavedSecrets":
-                //log.trace("Secrets");
+                log.trace("Secrets");
                 for (String prop : readArrayProperty(in)) {
                     PinkCube s = PinkCube.fromString(prop);
                     if (s == null)
                         continue;
                     pinkCubes.add(s);
-                    //log.trace("\t" + prop);
+                    log.trace("\t" + prop);
                 }
                 break;
             case "SavedTriggers":
@@ -127,11 +137,11 @@ public class AntichamberSave implements FileReader {
                 }
                 break;
             case "MapArray":
-                //log.trace("Map");
+                log.trace("Map");
                 readArrayProperty(in);
                 break;
             default:
-                //log.trace("Skipping unused property " + propName + "[" + propType + "]");
+                log.trace("Skipping unused property " + propName + "[" + propType + "]");
                 readProperty(in, propType);
                 break;
         }

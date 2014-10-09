@@ -23,7 +23,7 @@ import java.io.IOException;
  *
  */
 public interface FileReader {
-    void read() throws IOException;
+    boolean read() throws IOException;
 
     File getFile();
 }
