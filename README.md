@@ -1,6 +1,11 @@
 AntiTimer 0.1
 ======
 
+
+But you didn't make this?!?!
+------
+Correct. This was forked from https://bitbucket.org/WydD/antitimer/ so I could continue its development. All credit goes to WydD for figuring out how to get data from Antichamber and creating the bulk of this program. I'm just here to add some extra features.
+
 Cali made a video tutorial on how to setup AntiTimer. Go check him out: http://www.twitch.tv/cali292292/c/3765832
 
 AntiTimer DOES NOT WORK with the Standalone version

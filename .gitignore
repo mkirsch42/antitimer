@@ -1,0 +1,8 @@
+/.classpath
+/.project
+/.idea/
+/target/
+/.settings/
+*.iml
+/antitimer.cfg
+/debug.log
