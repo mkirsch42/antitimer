@@ -16,21 +16,23 @@
 
 package fr.petitl.antichamber;
 
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
+
 import fr.petitl.antichamber.gui.AntiTimerFrame;
-import fr.petitl.antichamber.timer.LlanfairControl;
+import fr.petitl.antichamber.timer.LiveSplitControl;
 import fr.petitl.antichamber.timer.TimerControl;
 import fr.petitl.antichamber.triggers.GameStatus;
 import fr.petitl.antichamber.triggers.SplitEngine;
 import fr.petitl.antichamber.triggers.StatusChangeListener;
 import fr.petitl.antichamber.triggers.logger.LogFile;
 import fr.petitl.antichamber.triggers.save.AntichamberSave;
-import org.fenix.llanfair.Llanfair;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 
 /**
  *
@@ -69,10 +71,13 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
             cfg.setAntichamberPath(exeAbsolutePath);
         }
 
-        Llanfair llanfair = new Llanfair();
-        control = new LlanfairControl(llanfair);
+//        Llanfair llanfair = new Llanfair();
+//        control = new LlanfairControl(llanfair);
 
+        control = new LiveSplitControl();
+        
         AntichamberSave save = new AntichamberSave(cfg.getAntichamberSave());
+//        AntichamberSave.log.setLevel(LogLevel.DEBUG);
         LogFile logFile = new LogFile(cfg.getAntichamberLog());
         gameStatus = new GameStatus(save, logFile, KeyEvent.VK_P, this, this);
 

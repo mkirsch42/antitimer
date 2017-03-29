@@ -6,3 +6,4 @@
 *.iml
 /antitimer.cfg
 /debug.log
+/.vscode/

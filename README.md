@@ -20,6 +20,12 @@ Configuring your Antichamber
 ------
 Antichamber does not provide a trigger for clicking on the map (start timer) and for credits so we'll need to configure some hacks to workaround.
 
+Making LiveSplit Work
+------
+- Download LiveSplit Server from https://github.com/LiveSplit/LiveSplit.Server/releases and extract the .zip file to the Components folder in your LiveSplit install
+- LiveSplit -> Edit Layout... -> (+) -> Control -> LiveSplit Server
+- Make sure LiveSplit is running before you start Antitimer
+
 #### Set logging in flush mode
 Inside the launch options in Steam add the following command
 
