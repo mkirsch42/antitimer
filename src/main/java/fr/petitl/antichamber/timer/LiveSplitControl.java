@@ -15,7 +15,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -108,7 +107,7 @@ public class LiveSplitControl implements TimerControl {
 
 	    Transformer transformer = TransformerFactory.newInstance().newTransformer();
 	    DOMSource source = new DOMSource(doc);
-	    StreamResult result = new StreamResult(new File("D:\\Home\\antichamber.lss"));
+	    StreamResult result = new StreamResult(new File(System.getProperty("user.home") + "/antichamber.lss"));
 	    transformer.transform(source, result);
 	} catch (ParserConfigurationException e) {
 	    // TODO Auto-generated catch block

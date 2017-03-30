@@ -24,7 +24,8 @@ Making LiveSplit Work
 ------
 - Download LiveSplit Server from https://github.com/LiveSplit/LiveSplit.Server/releases and extract the .zip file to the Components folder in your LiveSplit install
 - LiveSplit -> Edit Layout... -> (+) -> Control -> LiveSplit Server
-- Make sure LiveSplit is running before you start Antitimer
+- Make sure LiveSplit and LiveSplit Server (Control -> Start Server) are running before you start Antitimer
+- The "Init Llanfair" menu option will generate a splits file at `` C:\Users\{username}\antichamber.lss ``. You will need to manually import the splits file into LiveSplit whenever you update the splits for now.
 
 #### Set logging in flush mode
 Inside the launch options in Steam add the following command
