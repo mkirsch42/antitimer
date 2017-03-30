@@ -113,9 +113,7 @@ First release
 
 What's to come in future release?
 ------
-* LiveSplit support (thanks to the support of CryZe)
 * Timer backend selection and disabling timer for explaratory purposes.
-* Configuration panel.
 
 Happy Running!
 
