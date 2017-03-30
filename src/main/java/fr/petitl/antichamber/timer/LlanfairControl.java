@@ -342,4 +342,8 @@ public class LlanfairControl implements TimerControl {
         }
     }
 
+    @Override
+    public String toString() {
+	return "llanfair";
+    }
 }

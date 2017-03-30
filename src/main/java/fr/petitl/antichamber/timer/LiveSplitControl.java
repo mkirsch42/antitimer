@@ -3,6 +3,7 @@ package fr.petitl.antichamber.timer;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -25,26 +26,14 @@ public class LiveSplitControl implements TimerControl {
     protected Socket socket;
     protected OutputStreamWriter osw;
 
-    public LiveSplitControl() {
+    public LiveSplitControl() throws UnknownHostException, IOException {
 	this("localhost", 16834);
     }
 
-    public LiveSplitControl(String hostname, int port) {
-	try {
-	    socket = new Socket(hostname, port);
-	} catch (UnknownHostException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	try {
-	    osw = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+    public LiveSplitControl(String hostname, int port) throws UnknownHostException, IOException {
+	socket = new Socket(hostname, port);
+	osw = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
+
     }
 
     @Override
@@ -55,7 +44,7 @@ public class LiveSplitControl implements TimerControl {
     @Override
     public void buildAndInjectRun(String runName, List<TriggerInfo> splits) {
 	reset();
-	runName = runName.length()==0 ? "Run" : runName;
+	runName = runName.length() == 0 ? "Run" : runName;
 	try {
 	    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 	    Element root = doc.createElement("Run");
@@ -87,11 +76,11 @@ public class LiveSplitControl implements TimerControl {
 		metadata.appendChild(variables);
 	    }
 	    root.appendChild(metadata);
-	    
+
 	    Element attemptCount = doc.createElement("AttemptCount");
 	    attemptCount.setTextContent("0");
 	    root.appendChild(attemptCount);
-	    
+
 	    Element attemptHistory = doc.createElement("AttemptHistory");
 	    root.appendChild(attemptHistory);
 
@@ -101,7 +90,7 @@ public class LiveSplitControl implements TimerControl {
 	    }
 	    segments.appendChild(segment("Complete " + runName, doc));
 	    root.appendChild(segments);
-	    
+
 	    Element autoSplitterSettings = doc.createElement("AutoSplitterSettings");
 	    root.appendChild(autoSplitterSettings);
 
@@ -118,7 +107,7 @@ public class LiveSplitControl implements TimerControl {
 	}
 
     }
-    
+
     public Element segment(String segName, Document doc) {
 	Element segment = doc.createElement("Segment");
 	Element name = doc.createElement("Name");
@@ -162,4 +151,9 @@ public class LiveSplitControl implements TimerControl {
 	}
     }
 
+    @Override
+    public String toString() {
+	return "livesplit";
+    }
+    
 }
