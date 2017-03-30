@@ -246,7 +246,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         configure.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(frame, "Not implemented yet", "Configure", JOptionPane.ERROR_MESSAGE);
+        	new ConfigFrame().setVisible(true);
             }
         });
         anti.add(new JSeparator());

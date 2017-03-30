@@ -63,7 +63,7 @@ public class IniConfig implements Configurable {
 
     @Override
     public String desc() {
-	return tweak.name();
+	return tweak.name;
     }
 
 }
