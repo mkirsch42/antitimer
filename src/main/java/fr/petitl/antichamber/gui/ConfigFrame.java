@@ -23,6 +23,7 @@ public class ConfigFrame extends JFrame {
      */
     public ConfigFrame() {
 	setBounds(100, 100, 450, 300);
+	setTitle("Antichamber Configuration");
 	contentPane = new JPanel();
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
