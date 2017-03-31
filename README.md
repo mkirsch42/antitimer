@@ -1,4 +1,4 @@
-AntiTimer 0.1
+AntiTimer 0.2
 ======
 
 
@@ -94,6 +94,11 @@ The code has been released on Apache 2 Licence, don't hesitate to contribute and
 
 Changelog
 ------
+
+#### 0.2.0
+* Add support for LiveSplit and switching timers
+* Add support for not using a timer
+* Add configuration panel
 
 #### 0.1.2
 * Fixing error management during save reading. This problem could (and have) lead to a random reset. (reported by Murklan)
