@@ -66,4 +66,26 @@ public class IniConfig implements Configurable {
 	return tweak.name;
     }
 
+    @Override
+    public boolean isEnabled() throws InvalidFileFormatException, IOException {
+	for(IniOption o : tweak.adds) {
+	    Ini ini = new Ini(new File(configPath + o.file));
+	    Section sec = ini.get(o.section);
+	    if(sec == null) {
+		return false;
+	    }
+	    if(!sec.getAll(o.key).contains(o.value)) {
+		return false;
+	    }
+	}
+	for(IniOption o : tweak.removes) {
+	    Ini ini = new Ini(new File(configPath + o.file));
+	    Section sec = ini.get(o.section);
+	    if(sec != null && sec.getAll(o.key).contains(o.value)) {
+		return false;
+	    }
+	}
+	return true;
+    }
+
 }

@@ -27,40 +27,45 @@ public class ConfigFrame extends JFrame {
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
 	GridBagLayout gbl_contentPane = new GridBagLayout();
-	gbl_contentPane.columnWidths = new int[]{};
-	gbl_contentPane.rowHeights = new int[]{};
-	gbl_contentPane.columnWeights = new double[]{1, 0, 0};
-	gbl_contentPane.rowWeights = new double[]{0};
+	gbl_contentPane.columnWidths = new int[] { 0, 75 };
+	gbl_contentPane.rowHeights = new int[] {};
+	gbl_contentPane.columnWeights = new double[] { 1, 0 };
+	gbl_contentPane.rowWeights = new double[] { 0 };
 	contentPane.setLayout(gbl_contentPane);
+	refresh();
+    }
+
+    private void refresh() {
+	System.out.println("refresh");
+	contentPane.removeAll();
 	GridBagConstraints c = new GridBagConstraints();
 	c.gridy = 0;
 	c.weighty = 1;
+	c.fill = GridBagConstraints.BOTH;
 	Configurable.allConfigs().forEach(conf -> {
 	    c.gridx = 0;
 	    contentPane.add(new JLabel(conf.desc()), c);
 	    c.gridx = 1;
-	    JButton btnApply = new JButton("Apply");
-	    btnApply.addActionListener(event->{
+	    JButton btnToggle;
+	    try {
+		btnToggle = new JButton(conf.isEnabled() ? "Remove" : "Apply");
+	    } catch (IOException e) {
+		e.printStackTrace();
+		btnToggle = new JButton("Toggle");
+	    }
+	    btnToggle.addActionListener(event -> {
 		try {
-		    Configurable t = conf;
-		    conf.config();
-		} catch(IOException e) {
+		    conf.toggle();
+		    refresh();
+		} catch (IOException e) {
 		    e.printStackTrace();
 		}
 	    });
-	    contentPane.add(btnApply, c);
-	    c.gridx = 2;
-	    JButton btnUndo = new JButton("Remove");
-	    btnUndo.addActionListener(event->{
-		try {
-		    conf.unconfig();
-		} catch(IOException e) {
-		    e.printStackTrace();
-		}
-	    });
-	    contentPane.add(btnUndo, c);
+	    contentPane.add(btnToggle, c);
 	    c.gridy = c.gridy + 1;
 	});
+	contentPane.revalidate();
+	contentPane.repaint();
     }
 
 }

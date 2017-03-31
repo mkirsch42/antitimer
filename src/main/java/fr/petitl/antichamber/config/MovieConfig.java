@@ -1,7 +1,10 @@
 package fr.petitl.antichamber.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.stream.Stream;
+
+import org.ini4j.InvalidFileFormatException;
 
 import fr.petitl.antichamber.Configuration;
 
@@ -26,7 +29,13 @@ public class MovieConfig implements Configurable {
 
     @Override
     public String desc() {
-	return "Remove intro movies";
+	return "Skip intro movies";
+    }
+
+    @Override
+    public boolean isEnabled() throws InvalidFileFormatException, IOException {
+	File movieDir = new File(Configuration.read().getAntichamberPath() + "/UDKGame/Movies");
+	return Stream.of(movieDir.listFiles()).allMatch(f -> f.getAbsolutePath().contains(".bak"));
     }
     
 }
