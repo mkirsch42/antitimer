@@ -37,16 +37,12 @@ Alternatively, you can use the AntiTimer menu -> Launch Antichamber which does t
 
 ### Add a fake input to trace sounds
 This is necessary if you want to track the Credits trigger.
-Inside ``\UDKGame\Config\UDKInput.ini`` add the following line:
-
-``Bindings=(Name="P",Command="ListWaves",Control=False,Shift=False,Alt=False,bIgnoreCtrl=False,bIgnoreShift=False,bIgnoreAlt=False)``
-
-Before ``bInvertMouse=...``
+Go to the AntiTimer menu -> Configure -> Allow tracking in The End -> Click Apply
 
 How to run this thing?
 ------
 #### Environment
-You need an up-to-date Java environment on your desktop (java7). If you don't, download it at http://java.com/getjava 
+You need an up-to-date Java environment on your desktop (java8). If you don't, download it at http://java.com/getjava 
 
 Now, just launch the jar file (double-clicking works if you have java installed).
 
@@ -92,7 +88,9 @@ By default, the pink wall and the pink completion is triggered when you have all
 
 About Antitimer
 ------
-It has been coded with love by Loic Petit (WydD). You can find me on http://twitch.tv/wyddgames all my other contact infos are there. The code has been released on Apache 2 Licence, don't hesitate to contribute and/or steal my code.
+Originally coded by Loic Petit (WydD), who you can find at http://twitch.tv/wyddgames. After WydD became inactive in the Antichamber community, I (Mathew Kirschbaum / mkirsch42) picked this up and added a few new features to it. You can find me on Reddit at http://reddit.com/u/mkirsch42, and I'm sometimes on the Antichamber Discord as mkirsch42.
+
+The code has been released on Apache 2 Licence, don't hesitate to contribute and/or steal my code.
 
 Changelog
 ------
