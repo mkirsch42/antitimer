@@ -16,6 +16,7 @@
 
 package fr.petitl.antichamber.timer;
 
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -30,10 +31,10 @@ import org.fenix.llanfair.Run;
 import org.fenix.llanfair.Segment;
 import org.fenix.llanfair.Settings;
 import org.fenix.llanfair.Time;
-import org.jnativehook.GlobalScreen;
 
 import fr.petitl.antichamber.log.Logger;
 import fr.petitl.antichamber.triggers.TriggerInfo;
+import fr.petitl.antichamber.util.CodeControl;
 
 /**
  *
@@ -54,10 +55,13 @@ public class LlanfairControl implements TimerControl {
 
     @Override
     public void exit() {
-	reset();
-        GlobalScreen.unregisterNativeHook();
-	llanfair.setVisible(false);
-	llanfair = null;
+	CodeControl ctrl = new CodeControl();
+	try {
+	    ctrl.disableSystemExit();
+	    llanfair.dispatchEvent(new WindowEvent(llanfair, WindowEvent.WINDOW_CLOSING));
+	} finally {
+	    ctrl.enableSystemExit();
+	}
     }
 
     @Override
