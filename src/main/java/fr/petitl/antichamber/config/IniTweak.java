@@ -26,8 +26,17 @@ public enum IniTweak {
 		    new IniOption("DefaultInput.ini", "Engine.Console", "TypeKey", "None")
 	    }),
     NO_CAP("Remove FPS Cap (Disallowed in 100% and Pink Cubes)",
-	    new IniOption[]{},
-	    new IniOption[]{}),
+	    new IniOption[]{
+		    new IniOption("UDKInput.ini", "Engine.PlayerInput", "Bindings", "Bindings=(Name=\"LeftAlt\",Command=\"SetFps 60 | onrelease SetFps 999\",Control=False,Shift=False,Alt=False,bIgnoreCtrl=False,bIgnoreShift=False,bIgnoreAlt=False)"),
+		    new IniOption("UDKEngine.ini", "Engine.Engine", "MinSmoothFrameRate", "60"),
+		    new IniOption("UDKEngine.ini", "Engine.Engine", "MinSmoothFrameRate", "999"),
+		    new IniOption("UDKEngine.ini", "SystemSettings", "UseVsync", "False")
+	    },
+	    new IniOption[]{
+		    new IniOption("UDKEngine.ini", "Engine.Engine", "MinSmoothFrameRate", "22"),
+		    new IniOption("UDKEngine.ini", "Engine.Engine", "MinSmoothFrameRate", "62"),
+		    new IniOption("UDKEngine.ini", "SystemSettings", "UseVsync", "True")
+	    }),
     END_HACK("Allow tracking in The End",
 	    new IniOption[]{
 		    new IniOption("UDKInput.ini", "Engine.PlayerInput", "Bindings", "(Name=\"P\",Command=\"ListWaves\",Control=False,Shift=False,Alt=False,bIgnoreCtrl=False,bIgnoreShift=False,bIgnoreAlt=False)")
