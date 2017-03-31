@@ -9,6 +9,9 @@ import org.fenix.llanfair.Llanfair;
 public class TimerFactory {
     
     public static TimerControl fromString(String str) {
+	if(str == null) {
+	    return notimer();
+	}
 	switch(str) {
 	case "llanfair":
 	    return llanfair();

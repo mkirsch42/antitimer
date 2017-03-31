@@ -26,5 +26,5 @@ public interface SplitEngine {
     void fireSplit(long timestamp);
     void fireEnd(long timestamp);
     void fireReset();
-    void setTimer(TimerControl t);
+    void setTimer(TimerControl t, boolean set);
 }

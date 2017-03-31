@@ -115,8 +115,8 @@ public class GameStatus {
         this.endingConditions = endingConditions;
     }
     
-    public void setTimer(TimerControl t) {
-	splitEngine.setTimer(t);
+    public void setTimer(TimerControl t, boolean set) {
+	splitEngine.setTimer(t, set);
     }
 
     private void checkEndingConditions(long timestamp) {

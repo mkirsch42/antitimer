@@ -16,11 +16,21 @@
 
 package fr.petitl.antichamber;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
+
+import fr.petitl.antichamber.timer.TimerControl;
+import fr.petitl.antichamber.timer.TimerFactory;
 
 /**
  *
@@ -30,6 +40,7 @@ public class Configuration implements Serializable {
     private static final long serialVersionUID = -8314817758671312803L;
 
     private String antichamberPath;
+    private String timer = "notimer";
     private Map<String, Point> windowLocations = new HashMap<>();
     private Map<String, Dimension> windowSize = new HashMap<>();
 
@@ -74,7 +85,15 @@ public class Configuration implements Serializable {
         windowSize.put(window, dimension);
         write();
     }
-
+    
+    public TimerControl getTimer() {
+	return TimerFactory.fromString(timer);
+    }
+    
+    public void setTimer(TimerControl t) {
+	this.timer = t.toString();
+	write();
+    }
 
     public void write() {
         Configuration.write(this);

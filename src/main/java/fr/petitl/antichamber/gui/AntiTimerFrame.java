@@ -157,7 +157,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
 	Stream.of(new String[]{"No Timer", "Llanfair", "LiveSplit"}).forEach(t -> {
 	    JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(t);
 	    jmi.addActionListener(event -> {
-		status.setTimer(TimerFactory.fromString(t.replaceAll(" ", "").toLowerCase()));
+		status.setTimer(TimerFactory.fromString(t.replaceAll(" ", "").toLowerCase()), true);
 	    });
 	    timers.add(jmi);
 	});

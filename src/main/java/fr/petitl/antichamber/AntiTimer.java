@@ -70,7 +70,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	    String exeAbsolutePath = exe.getParentFile().getParentFile().getParentFile().getAbsolutePath();
 	    cfg.setAntichamberPath(exeAbsolutePath);
 	}
-	
+
 	control = TimerFactory.notimer();
 
 	AntichamberSave save = new AntichamberSave(cfg.getAntichamberSave());
@@ -80,8 +80,8 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	frame = new AntiTimerFrame(control, gameStatus, cfg);
 	frame.getFrame().setVisible(true);
 	frame.update(gameStatus);
-	
-	setTimer(TimerFactory.llanfair());
+
+	setTimer(cfg.getTimer(), false);
     }
 
     @Override
@@ -110,10 +110,13 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	control.reset();
     }
 
-    public void setTimer(TimerControl t) {
+    public void setTimer(TimerControl t, boolean set) {
 	control.exit();
 	control = t;
 	frame.refreshTimer(control.toString());
+	if (set) {
+	    Configuration.read().setTimer(control);
+	}
     }
 
     public static void main(String[] args) throws IOException {
