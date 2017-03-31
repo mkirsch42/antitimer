@@ -21,10 +21,12 @@ public class IniConfig implements Configurable {
     private static void remove(IniOption o) throws InvalidFileFormatException, IOException {
 	Ini ini = new Ini(new File(configPath + o.file));
 	Section sec = ini.get(o.section);
-	int index = sec.getAll(o.key).indexOf(o.value);
-	if (index != -1) {
-	    sec.remove(o.key, index);
-	    ini.store();
+	if (sec.getAll(o.key) != null) {
+	    int index = sec.getAll(o.key).indexOf(o.value);
+	    if (index != -1) {
+		sec.remove(o.key, index);
+		ini.store();
+	    }
 	}
     }
 
@@ -68,20 +70,20 @@ public class IniConfig implements Configurable {
 
     @Override
     public boolean isEnabled() throws InvalidFileFormatException, IOException {
-	for(IniOption o : tweak.adds) {
+	for (IniOption o : tweak.adds) {
 	    Ini ini = new Ini(new File(configPath + o.file));
 	    Section sec = ini.get(o.section);
-	    if(sec == null) {
+	    if (sec == null) {
 		return false;
 	    }
-	    if(!sec.getAll(o.key).contains(o.value)) {
+	    if (sec.getAll(o.key) != null && !sec.getAll(o.key).contains(o.value)) {
 		return false;
 	    }
 	}
-	for(IniOption o : tweak.removes) {
+	for (IniOption o : tweak.removes) {
 	    Ini ini = new Ini(new File(configPath + o.file));
 	    Section sec = ini.get(o.section);
-	    if(sec != null && sec.getAll(o.key).contains(o.value)) {
+	    if (sec != null && sec.getAll(o.key) != null && sec.getAll(o.key).contains(o.value)) {
 		return false;
 	    }
 	}
