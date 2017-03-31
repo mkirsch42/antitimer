@@ -111,7 +111,7 @@ First release
 
 What's to come in future release?
 ------
-* Timer backend selection and disabling timer for explaratory purposes.
+* Let me know what you want!
 
 Happy Running!
 
