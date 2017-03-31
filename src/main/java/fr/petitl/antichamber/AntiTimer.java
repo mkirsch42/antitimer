@@ -19,17 +19,13 @@ package fr.petitl.antichamber;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
 import fr.petitl.antichamber.gui.AntiTimerFrame;
-import fr.petitl.antichamber.timer.LiveSplitControl;
-import fr.petitl.antichamber.timer.NoTimer;
 import fr.petitl.antichamber.timer.TimerControl;
 import fr.petitl.antichamber.timer.TimerFactory;
 import fr.petitl.antichamber.triggers.GameStatus;
@@ -112,9 +108,10 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	control.reset();
     }
 
-    public void switchTimer(TimerControl t) {
+    public void setTimer(TimerControl t) {
 	control.exit();
 	control = t;
+	frame.refreshTimer(control.toString());
     }
 
     public static void main(String[] args) throws IOException {

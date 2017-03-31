@@ -16,6 +16,8 @@
 
 package fr.petitl.antichamber.triggers;
 
+import fr.petitl.antichamber.timer.TimerControl;
+
 /**
  *
  */
@@ -24,4 +26,5 @@ public interface SplitEngine {
     void fireSplit(long timestamp);
     void fireEnd(long timestamp);
     void fireReset();
+    void setTimer(TimerControl t);
 }

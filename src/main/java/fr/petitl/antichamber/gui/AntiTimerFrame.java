@@ -107,6 +107,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         JMenuBar m = new JMenuBar();
         antiTimerMenu(m);
         monitorMenu(m);
+        timerMenu(m);
         helpMenu(m);
         setJMenuBar(m);
 
@@ -149,6 +150,30 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
 
             }
         });
+    }
+    
+    private void timerMenu(JMenuBar m) {
+	JMenu timers = new JMenu("Timers");
+	Stream.of(new String[]{"No Timer", "Llanfair", "LiveSplit"}).forEach(t -> {
+	    JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(t);
+	    jmi.addActionListener(event -> {
+		status.setTimer(TimerFactory.fromString(t.replaceAll(" ", "").toLowerCase()));
+	    });
+	    timers.add(jmi);
+	});
+	m.add(timers);
+    }
+    
+    public void refreshTimer(String id) {
+	JMenu menu = getJMenuBar().getMenu(2);
+	for(int i = 0; i < menu.getItemCount(); i++) {
+	    JCheckBoxMenuItem jmi = (JCheckBoxMenuItem)menu.getItem(i);
+	    if(id.equals(jmi.getText().replaceAll(" ", "").toLowerCase())){
+		jmi.setState(true);
+	    } else {
+		jmi.setState(false);
+	    }
+	}
     }
 
     private void helpMenu(JMenuBar m) {

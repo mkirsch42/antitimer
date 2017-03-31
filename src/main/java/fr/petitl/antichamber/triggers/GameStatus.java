@@ -16,22 +16,28 @@
 
 package fr.petitl.antichamber.triggers;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
 import fr.petitl.antichamber.log.Logger;
+import fr.petitl.antichamber.timer.TimerControl;
 import fr.petitl.antichamber.triggers.logger.LogChangeListener;
 import fr.petitl.antichamber.triggers.logger.LogFile;
-import fr.petitl.antichamber.triggers.save.*;
+import fr.petitl.antichamber.triggers.save.AntichamberSave;
+import fr.petitl.antichamber.triggers.save.SaveChangeListener;
 import fr.petitl.antichamber.triggers.save.data.Gun;
 import fr.petitl.antichamber.triggers.save.data.MapEntry;
 import fr.petitl.antichamber.triggers.save.data.PinkCube;
 import fr.petitl.antichamber.triggers.save.data.Sign;
 import fr.petitl.antichamber.triggers.watchers.LogFileWatcher;
 import fr.petitl.antichamber.triggers.watchers.SaveFileWatcher;
-
-import java.awt.*;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
 
 /**
  *
@@ -107,6 +113,10 @@ public class GameStatus {
     public void setEndingConditions(List<TriggerInfo> endingConditions) {
         log.debug("Setting new ending conditions");
         this.endingConditions = endingConditions;
+    }
+    
+    public void setTimer(TimerControl t) {
+	splitEngine.setTimer(t);
     }
 
     private void checkEndingConditions(long timestamp) {
