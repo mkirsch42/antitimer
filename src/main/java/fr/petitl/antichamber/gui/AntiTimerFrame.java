@@ -16,28 +16,56 @@
 
 package fr.petitl.antichamber.gui;
 
-import fr.petitl.antichamber.AntiTimer;
-import fr.petitl.antichamber.Configuration;
-import fr.petitl.antichamber.gui.monitors.*;
-import fr.petitl.antichamber.gui.panels.Splits;
-import fr.petitl.antichamber.timer.TimerControl;
-import fr.petitl.antichamber.triggers.GameStatus;
-import fr.petitl.antichamber.triggers.TriggerInfo;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.Desktop;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
+
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import javax.swing.WindowConstants;
+
+import fr.petitl.antichamber.AntiTimer;
+import fr.petitl.antichamber.Configuration;
+import fr.petitl.antichamber.gui.monitors.GunMonitor;
+import fr.petitl.antichamber.gui.monitors.LatestSignMonitor;
+import fr.petitl.antichamber.gui.monitors.MapCompletionMonitor;
+import fr.petitl.antichamber.gui.monitors.MapMonitor;
+import fr.petitl.antichamber.gui.monitors.PinkWallMonitor;
+import fr.petitl.antichamber.gui.monitors.SignWallMonitor;
+import fr.petitl.antichamber.gui.monitors.TriggerMonitor;
+import fr.petitl.antichamber.gui.panels.Splits;
+import fr.petitl.antichamber.timer.TimerControl;
+import fr.petitl.antichamber.timer.TimerFactory;
+import fr.petitl.antichamber.triggers.GameStatus;
+import fr.petitl.antichamber.triggers.TriggerInfo;
 
 /**
  *
  */
 public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private static final String TITLE = "AntiTimer";
-    private static final String BITBUCKET_LINK = "https://bitbucket.org/WydD/antitimer/wiki/Home";
+    private static final String BITBUCKET_LINK = "https://github.com/mkirsch42/antitimer";
     private static final long serialVersionUID = -2200305139211369118L;
     private final GunMonitor gun;
     private final MapCompletionMonitor mapCompletion;
@@ -146,7 +174,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "AntiTimer " + AntiTimer.VERSION + "\n\n" +
-                        "Developed by: WydD\n\n" +
+                        "Developed by: WydD and mkirsch42\n\n" +
                         "Special thanks to:\n" +
                         "\tCrehl (for his early work on the sign tracker)\n" +
                         "\tCali and Pallidus (for their testing and feedbacks)\n" +

@@ -37,7 +37,6 @@ public class ConfigFrame extends JFrame {
     }
 
     private void refresh() {
-	System.out.println("refresh");
 	contentPane.removeAll();
 	GridBagConstraints c = new GridBagConstraints();
 	c.gridy = 0;
