@@ -49,6 +49,8 @@ Now, just launch the jar file (double-clicking works if you have java installed)
 #### Set Antichamber Path
 AntiTimer will ask you to find ``Antichamber\Binaries\Win32\UDK.exe`` to be able to locate all the files it needs. This will be stored inside antitimer.cfg for future use.
 
+#### Set a timer
+By default, antitimer does not connect to a timer. To select a timer, go to the Timer menu and select the timer you want. Selecting Llanfair will automatically open the timer, while selecting LiveSplit requires a LiveSplit server instance to be running already (see above: Making LiveSplit Work). Your timer selection will be saved.
 
 Configure your run
 ------
@@ -116,7 +118,7 @@ First release
 
 What's to come in future release?
 ------
-* Let me know what you want!
+* Sync files between LiveSplit, Llanfair, and antitimer
 
 Happy Running!
 
