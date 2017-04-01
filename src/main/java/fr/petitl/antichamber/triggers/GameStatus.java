@@ -119,6 +119,10 @@ public class GameStatus {
 	splitEngine.setTimer(t, set);
     }
 
+    public TimerControl getTimer() {
+	return splitEngine.getTimer();
+    }
+    
     private void checkEndingConditions(long timestamp) {
         if(endingConditions == null || endingConditions.size() == 0)
             return;

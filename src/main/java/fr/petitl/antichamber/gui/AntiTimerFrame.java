@@ -317,7 +317,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         initLlanfair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                control.buildAndInjectRun(splits.getTitleTextField().getText(), splits.getSplitModel().getTriggers());
+                status.getTimer().buildAndInjectRun(splits.getTitleTextField().getText(), splits.getSplitModel().getTriggers());
             }
         });
         anti.add(new JSeparator());

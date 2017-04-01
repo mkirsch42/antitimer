@@ -132,4 +132,9 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	    }
 	});
     }
+
+    @Override
+    public TimerControl getTimer() {
+	return control;
+    }
 }
