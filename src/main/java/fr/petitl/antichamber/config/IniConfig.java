@@ -3,6 +3,7 @@ package fr.petitl.antichamber.config;
 import java.io.File;
 import java.io.IOException;
 
+import org.ini4j.Config;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Profile.Section;
@@ -13,6 +14,10 @@ public class IniConfig implements Configurable {
 
     private static final String configPath = Configuration.read().getAntichamberPath() + "/UDKGame/Config/";;
     IniTweak tweak;
+    
+    static {
+	Config.getGlobal().setEscape(false);
+    }
 
     public IniConfig(IniTweak tweak) {
 	this.tweak = tweak;
