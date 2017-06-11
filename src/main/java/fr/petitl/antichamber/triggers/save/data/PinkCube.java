@@ -36,8 +36,8 @@ public enum PinkCube {
     CHASE("HazardEndGame.5", "Chase"), //
     MULTICOLOR("HazardLeap.7", "Multi-Color Windows"), //
     GALLERY("HazardIGFChinaSplit.16", "Gallery"), //
-    GLITCHED_GALLERY("HazardIGFChinaSplit.0", "[extra] Glitched Gallery"), //
-    OOB("HazardSeamless.15", "[extra] Out of Bounds"), ;
+    GLITCHED_GALLERY("HazardSeamless.15", "[extra] Glitched Gallery"), //
+    OOB("HazardIGFChinaSplit.0", "[extra] Out of Bounds"), ;
 
     private final String id;
 
