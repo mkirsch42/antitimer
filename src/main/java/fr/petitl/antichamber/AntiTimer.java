@@ -16,14 +16,22 @@
 
 package fr.petitl.antichamber;
 
+import java.awt.Desktop;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
+
+import org.json.JSONObject;
 
 import fr.petitl.antichamber.gui.AntiTimerFrame;
 import fr.petitl.antichamber.timer.TimerControl;
@@ -38,12 +46,14 @@ import fr.petitl.antichamber.triggers.save.AntichamberSave;
  *
  */
 public class AntiTimer implements StatusChangeListener, SplitEngine {
-    public final static String VERSION = "0.2";
+    public final static String VERSION = "0.2.2";
     private TimerControl control;
     private AntiTimerFrame frame;
     private GameStatus gameStatus;
 
     public AntiTimer() throws IOException {
+	checkVersion();
+	
 	Configuration cfg = Configuration.read();
 
 	File exe = cfg.getAntichamberExe();
@@ -131,6 +141,55 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 		}
 	    }
 	});
+    }
+
+    public void checkVersion() {
+	// Start a thread ot determine the most recent verison that has been
+	// uploaded
+	Thread newerVersionThread = new Thread(() -> {
+	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+		    new URL("https://api.github.com/repos/mkirsch42/antitimer/releases/latest").openStream()))) {
+		
+		StringBuffer buffer  = new StringBuffer();
+		int read;
+		char[] chars = new char[1024];
+		while ((read = reader.read(chars)) != -1)
+	            buffer.append(chars, 0, read); 
+		String jsonStr = buffer.toString();
+		
+		JSONObject json = new JSONObject(jsonStr);
+		String latest = json.getString("tag_name");
+		System.out.println("Latest version: " + latest);
+		if(!latest.equals(VERSION)) {
+		    System.out.println("Update available");
+		    updateAvailable(json);
+		}
+		
+	    } catch (IOException e) {
+		JOptionPane.showMessageDialog(frame, "Failed to check most recent version.", "Antitimer updates",
+			JOptionPane.WARNING_MESSAGE);
+		e.printStackTrace();
+	    }
+	}, "Newer Version Thread");
+	
+	newerVersionThread.setDaemon(true);
+	newerVersionThread.start();
+    }
+    
+    public void updateAvailable(JSONObject json) {
+	int reply = JOptionPane.showConfirmDialog(frame, "New version available: "+json.getString("tag_name")+"\n\n"
+		+ json.getString("body") + "\n\nDownload?", 
+		"Antitimer updates", JOptionPane.YES_NO_OPTION);
+	if(reply == JOptionPane.YES_OPTION) {
+	    Desktop desktop = Desktop.getDesktop();
+            if(desktop == null)
+                return;
+            try {
+                desktop.browse(URI.create(json.getString("html_url")));
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(frame, "Weird... cannot open browser... go to " + json.getString("html_url"));
+            }
+	}
     }
 
     @Override

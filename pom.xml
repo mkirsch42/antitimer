@@ -34,6 +34,12 @@
 			<artifactId>ini4j</artifactId>
 			<version>0.5.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20170516</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
