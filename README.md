@@ -1,4 +1,4 @@
-AntiTimer 0.2.1
+AntiTimer 0.2.2
 ======
 
 

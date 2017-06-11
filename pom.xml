@@ -5,7 +5,7 @@
 
 	<groupId>fr.petitl.antichamber</groupId>
 	<artifactId>timer</artifactId>
-	<version>0.2.1</version>
+	<version>0.2.2</version>
 
 	<dependencies>
 		<dependency>
