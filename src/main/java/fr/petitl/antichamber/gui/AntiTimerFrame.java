@@ -210,6 +210,9 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                 }
             }
         });
+        JMenuItem update = new JMenuItem("Check for Updates");
+        help.add(update);
+        update.addActionListener((e)->AntiTimer.checkVersion(this));
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(new ActionListener() {
             @Override

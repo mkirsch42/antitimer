@@ -26,6 +26,7 @@ import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -52,7 +53,6 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
     private GameStatus gameStatus;
 
     public AntiTimer() throws IOException {
-	checkVersion();
 	
 	Configuration cfg = Configuration.read();
 
@@ -91,6 +91,8 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	frame.getFrame().setVisible(true);
 	frame.update(gameStatus);
 
+	checkVersion(frame);
+	
 	setTimer(cfg.getTimer(), false);
     }
 
@@ -143,7 +145,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	});
     }
 
-    public void checkVersion() {
+    public static void checkVersion(JFrame frame) {
 	// Start a thread ot determine the most recent verison that has been
 	// uploaded
 	Thread newerVersionThread = new Thread(() -> {
@@ -162,7 +164,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 		System.out.println("Latest version: " + latest);
 		if(!latest.equals(VERSION)) {
 		    System.out.println("Update available");
-		    updateAvailable(json);
+		    updateAvailable(json, frame);
 		}
 		
 	    } catch (IOException e) {
@@ -176,7 +178,7 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	newerVersionThread.start();
     }
     
-    public void updateAvailable(JSONObject json) {
+    public static void updateAvailable(JSONObject json, JFrame frame) {
 	int reply = JOptionPane.showConfirmDialog(frame, "New version available: "+json.getString("tag_name")+"\n\n"
 		+ json.getString("body") + "\n\nDownload?", 
 		"Antitimer updates", JOptionPane.YES_NO_OPTION);
