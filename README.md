@@ -14,7 +14,7 @@ I'm working on finding a workaround. For now, it's working only on the Windows S
 
 Get it!
 ------
-Go the Download section here https://bitbucket.org/WydD/antitimer/downloads and download the latest binary
+Go the Download section here https://github.com/mkirsch42/antitimer/releases and download the latest binary
 
 Configuring your Antichamber
 ------
