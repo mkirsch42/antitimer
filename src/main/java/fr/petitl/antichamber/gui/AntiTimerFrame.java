@@ -66,6 +66,7 @@ import fr.petitl.antichamber.triggers.TriggerInfo;
 public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private static final String TITLE = "AntiTimer";
     private static final String BITBUCKET_LINK = "https://github.com/mkirsch42/antitimer";
+    private static final String ISSUES_LINK = "https://gitreports.com/issue/mkirsch42/antitimer";
     private static final long serialVersionUID = -2200305139211369118L;
     private final GunMonitor gun;
     private final MapCompletionMonitor mapCompletion;
@@ -191,6 +192,21 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                     desktop.browse(URI.create(BITBUCKET_LINK));
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(frame, "Weird... cannot open browser... go to " + BITBUCKET_LINK);
+                }
+            }
+        });
+        JMenuItem bugreport = new JMenuItem("Report Bug/Feature");
+        help.add(bugreport);
+        bugreport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Desktop desktop = Desktop.getDesktop();
+                if(desktop == null)
+                    return;
+                try {
+                    desktop.browse(URI.create(ISSUES_LINK));
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(frame, "Weird... cannot open browser... go to " + ISSUES_LINK);
                 }
             }
         });
