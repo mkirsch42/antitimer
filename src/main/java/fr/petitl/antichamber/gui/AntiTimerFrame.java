@@ -318,6 +318,14 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         	new ConfigFrame().setVisible(true);
             }
         });
+        JMenuItem configureVid = new JMenuItem("Configure Video");
+        anti.add(configureVid);
+        configureVid.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        	new VideoConfigFrame(cfg).setVisible(true);
+            }
+        });
         anti.add(new JSeparator());
         JMenuItem clear = new JMenuItem("Clear");
         clear.addActionListener(new ActionListener() {

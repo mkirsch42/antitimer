@@ -41,6 +41,8 @@ public class Configuration implements Serializable {
 
     private String antichamberPath;
     private String timer = "notimer";
+    private String videoPath = "";
+    private long videoStart = 0;
     private Map<String, Point> windowLocations = new HashMap<>();
     private Map<String, Dimension> windowSize = new HashMap<>();
 
@@ -63,6 +65,22 @@ public class Configuration implements Serializable {
 
     public File getAntichamberLog() {
         return new File(antichamberPath + "/UDKGame/Logs/Launch.log");
+    }
+    
+    public String getVideoPath() {
+    	return videoPath;
+    }
+    
+    public void setVideoPath(String path) {
+    	videoPath = path;
+    }
+    
+    public long getVideoStart() {
+    	return videoStart;
+    }
+    
+    public void setVideoStart(long start) {
+    	videoStart = start;
     }
 
     public Point getWindowLocation(String window) {

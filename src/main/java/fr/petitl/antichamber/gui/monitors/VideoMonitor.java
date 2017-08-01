@@ -3,10 +3,9 @@ package fr.petitl.antichamber.gui.monitors;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
+import fr.petitl.antichamber.Configuration;
 import fr.petitl.antichamber.gui.MonitorFrame;
 import fr.petitl.antichamber.triggers.GameStatus;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
@@ -49,14 +48,12 @@ public class VideoMonitor extends JFrame implements MonitorFrame {
     }
 
     private void setupPlayer() {
-        JFileChooser fc = new JFileChooser();
-        while(fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION);
-        String mrl = fc.getSelectedFile().getAbsolutePath();
-
-        startTime = Long.parseLong(JOptionPane.showInputDialog(this, "Start time: "));
+    	Configuration conf = Configuration.read();
         
+    	startTime = conf.getVideoStart();
+    	
         player.stop();
-        player.prepareMedia(mrl);
+        player.prepareMedia(conf.getVideoPath());
         player.parseMedia();
         
         setup = true;
