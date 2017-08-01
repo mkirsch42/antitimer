@@ -77,11 +77,11 @@ public class GameStatus {
     }
 
     public void reset() {
+    	isCurrentlyRunning = false;
         scl.gameStatusHasChanged();
         latestSign = Sign.SIGN_0;
         triggerComplete.clear();
         detectedTriggers.clear();
-        isCurrentlyRunning = false;
         creditsFounds = false;
         startTimestamp = 0;
         splitIdx = 0;

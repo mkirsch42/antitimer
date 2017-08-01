@@ -47,13 +47,7 @@ import javax.swing.WindowConstants;
 
 import fr.petitl.antichamber.AntiTimer;
 import fr.petitl.antichamber.Configuration;
-import fr.petitl.antichamber.gui.monitors.GunMonitor;
-import fr.petitl.antichamber.gui.monitors.LatestSignMonitor;
-import fr.petitl.antichamber.gui.monitors.MapCompletionMonitor;
-import fr.petitl.antichamber.gui.monitors.MapMonitor;
-import fr.petitl.antichamber.gui.monitors.PinkWallMonitor;
-import fr.petitl.antichamber.gui.monitors.SignWallMonitor;
-import fr.petitl.antichamber.gui.monitors.TriggerMonitor;
+import fr.petitl.antichamber.gui.monitors.*;
 import fr.petitl.antichamber.gui.panels.Splits;
 import fr.petitl.antichamber.timer.TimerControl;
 import fr.petitl.antichamber.timer.TimerFactory;
@@ -75,6 +69,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
     private final SignWallMonitor signWall;
     private final TriggerMonitor trigger;
     private final LatestSignMonitor latestSign;
+    private final VideoMonitor videoMonitor;
     private List<MonitorFrame> frames = new ArrayList<>();
     private TimerControl control;
     private Splits splits;
@@ -104,6 +99,8 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         frames.add(trigger);
         latestSign = new LatestSignMonitor();
         frames.add(latestSign);
+        videoMonitor = new VideoMonitor();
+        frames.add(videoMonitor);
 
         JMenuBar m = new JMenuBar();
         antiTimerMenu(m);
@@ -360,6 +357,7 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
         monitors.add(new MonitorMenuItem(latestSign, "Latest Sign"));
         monitors.add(new MonitorMenuItem(gun, "Current Gun"));
         monitors.add(new MonitorMenuItem(mapCompletion, "Map Completion"));
+        monitors.add(new MonitorMenuItem(videoMonitor, "Video"));
         m.add(monitors);
     }
 
