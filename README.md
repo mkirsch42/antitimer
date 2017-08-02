@@ -1,4 +1,4 @@
-AntiTimer 0.2.2
+AntiTimer 0.2.3
 ======
 
 
@@ -96,6 +96,9 @@ The code has been released on Apache 2 Licence, don't hesitate to contribute and
 
 Changelog
 ------
+
+#### 0.2.3
+* Add support for playing a video alongside your run
 
 #### 0.2.0
 * Add support for LiveSplit and switching timers

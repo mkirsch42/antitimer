@@ -28,7 +28,7 @@ public class VideoMonitor extends JFrame implements MonitorFrame {
 		this.setSize(640, 360);
 
 		boolean found = new NativeDiscovery().discover();
-		found = false;
+
 		if (!found) {
 			JFrame me = this;
 			this.addComponentListener(new ComponentAdapter() {
