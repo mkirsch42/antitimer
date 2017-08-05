@@ -67,7 +67,7 @@ public class VideoConfigFrame extends JFrame {
 		c.gridx = 0;
 		JButton save = new JButton("Save");
 		save.addActionListener(e->{
-			conf.setVideoStart((long)startTime.getValue());
+			conf.setVideoStart((int)startTime.getValue());
 			conf.write();
 		});
 		contentPane.add(save, c);
