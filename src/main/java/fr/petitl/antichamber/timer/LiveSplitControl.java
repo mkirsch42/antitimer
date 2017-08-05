@@ -1,13 +1,13 @@
 package fr.petitl.antichamber.timer;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
@@ -96,8 +96,16 @@ public class LiveSplitControl implements TimerControl {
 
 	    Transformer transformer = TransformerFactory.newInstance().newTransformer();
 	    DOMSource source = new DOMSource(doc);
-	    StreamResult result = new StreamResult(new File(System.getProperty("user.home") + "/antichamber.lss"));
-	    transformer.transform(source, result);
+	    
+	    JFileChooser fc = new JFileChooser();
+	    fc.addChoosableFileFilter(new FileNameExtensionFilter("LiveSplit Splits (.lss)", "lss"));
+	    fc.setFileFilter(fc.getChoosableFileFilters()[1]);
+	    if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+	    	StreamResult result = new StreamResult(fc.getSelectedFile());
+		    transformer.transform(source, result);
+	    }
+	    
+	    
 	} catch (ParserConfigurationException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
