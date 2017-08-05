@@ -1,4 +1,4 @@
-AntiTimer 0.2.3
+AntiTimer 0.2.4
 ======
 
 
@@ -96,6 +96,9 @@ The code has been released on Apache 2 Licence, don't hesitate to contribute and
 
 Changelog
 ------
+
+#### 0.2.4
+* Add dialog to choose save location for LiveSplit splits
 
 #### 0.2.3
 * Add support for playing a video alongside your run
