@@ -1,5 +1,6 @@
 package fr.petitl.antichamber.timer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -101,7 +102,11 @@ public class LiveSplitControl implements TimerControl {
 	    fc.addChoosableFileFilter(new FileNameExtensionFilter("LiveSplit Splits (.lss)", "lss"));
 	    fc.setFileFilter(fc.getChoosableFileFilters()[1]);
 	    if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-	    	StreamResult result = new StreamResult(fc.getSelectedFile());
+	    	String fileName = fc.getSelectedFile().getAbsolutePath();
+	    	if(!fileName.endsWith(".lss")) {
+	    		fileName += ".lss";
+	    	}
+	    	StreamResult result = new StreamResult(new File(fileName));
 		    transformer.transform(source, result);
 	    }
 	    
