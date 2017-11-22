@@ -1,4 +1,4 @@
-AntiTimer 0.2.5
+AntiTimer 0.2.6
 ======
 
 
@@ -96,6 +96,10 @@ The code has been released on Apache 2 Licence, don't hesitate to contribute and
 
 Changelog
 ------
+
+#### 0.2.6
+* Add option to disable checking for updates on startup
+* Add button to save triggers to CSV file
 
 #### 0.2.4
 * Add dialog to choose save location for LiveSplit splits

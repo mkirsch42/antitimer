@@ -47,7 +47,7 @@ import fr.petitl.antichamber.triggers.save.AntichamberSave;
  *
  */
 public class AntiTimer implements StatusChangeListener, SplitEngine {
-    public final static String VERSION = "0.2.5";
+    public final static String VERSION = "0.2.6";
     private TimerControl control;
     private AntiTimerFrame frame;
     private GameStatus gameStatus;
