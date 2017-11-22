@@ -45,6 +45,7 @@ public class Configuration implements Serializable {
     private long videoStart = 0;
     private Map<String, Point> windowLocations = new HashMap<>();
     private Map<String, Dimension> windowSize = new HashMap<>();
+    private boolean checkForUpdates = true;
 
     public String getAntichamberPath() {
         return antichamberPath;
@@ -111,6 +112,15 @@ public class Configuration implements Serializable {
     public void setTimer(TimerControl t) {
 	this.timer = t.toString();
 	write();
+    }
+    
+    public boolean getCheckUpdates() {
+    	return checkForUpdates;
+    }
+    
+    public void setCheckUpdates(boolean b) {
+    	checkForUpdates = b;
+    	write();
     }
 
     public void write() {

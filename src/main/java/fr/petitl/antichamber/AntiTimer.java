@@ -91,7 +91,9 @@ public class AntiTimer implements StatusChangeListener, SplitEngine {
 	frame.getFrame().setVisible(true);
 	frame.update(gameStatus);
 
-	checkVersion(frame);
+	if (cfg.getCheckUpdates()) {
+		checkVersion(frame);
+	}
 	
 	setTimer(cfg.getTimer(), false);
     }

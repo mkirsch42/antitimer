@@ -207,9 +207,14 @@ public class AntiTimerFrame extends JFrame implements MonitorFrame {
                 }
             }
         });
+        help.add(new JSeparator());
         JMenuItem update = new JMenuItem("Check for Updates");
         help.add(update);
         update.addActionListener((e)->AntiTimer.checkVersion(this));
+        JCheckBoxMenuItem updateOnStart = new JCheckBoxMenuItem("Update on Start", cfg.getCheckUpdates());
+        updateOnStart.addActionListener((e)->cfg.setCheckUpdates(updateOnStart.getState()));
+        help.add(updateOnStart);
+        help.add(new JSeparator());
         JMenuItem about = new JMenuItem("About");
         about.addActionListener(new ActionListener() {
             @Override
