@@ -34,6 +34,7 @@ public class TriggerTrackerPanel {
     private JCheckBox mapCheckBox;
     private JCheckBox creditsCheckBox;
     private JScrollPane scroll;
+    private JButton saveButton;
 
     public TriggerTrackerPanel() {
         model = new TriggerTableModel();
@@ -50,6 +51,7 @@ public class TriggerTrackerPanel {
         mapCheckBox.addActionListener(onCheckbox);
         creditsCheckBox.addActionListener(onCheckbox);
         onCheckbox.actionPerformed(null);
+        saveButton.addActionListener(e->model.save());
         scroll.getViewport().setBackground(Color.BLACK);
         triggerTable.getColumnModel().getColumn(0).setMaxWidth(250);
     }
@@ -132,6 +134,13 @@ public class TriggerTrackerPanel {
         gbc.weighty = 1.0;
         gbc.anchor = GridBagConstraints.WEST;
         panel1.add(creditsCheckBox, gbc);
+        saveButton = new JButton();
+        saveButton.setText("Save");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel1.add(saveButton, gbc);
         scroll = new JScrollPane();
         content.add(scroll, BorderLayout.CENTER);
         triggerTable = new JTable();
